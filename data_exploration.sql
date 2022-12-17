@@ -186,12 +186,12 @@ GROUP BY ct.location, ct.population;
 -- 5. Worldwide - Rolling new vaccinations by Country and Date
 
 SELECT 
-	ct.location, vc.date, ct.population, 
-	COALESCE(vc.total_vaccinations, 0)
-	- LAG(vc.total_vaccinations) 
-		OVER (PARTITION BY ct.location
-		ORDER BY ct.location, vc.date) AS new_vaccinations,
-	vc.total_vaccinations
+  ct.location, vc.date, ct.population, 
+  COALESCE(vc.total_vaccinations, 0)
+  - LAG(vc.total_vaccinations) 
+      OVER (PARTITION BY ct.location
+      ORDER BY ct.location, vc.date) AS new_vaccinations,
+  vc.total_vaccinations
 FROM countries ct
 JOIN vaccinations vc ON ct.iso_code = vc.iso_code
 WHERE ct.continent IS NOT NULL
@@ -201,13 +201,15 @@ ORDER BY ct.location, vc.date;
 -- 6. Vietnam - Rolling new vaccinations by Date
 
 SELECT 
-	ct.location, vc.date, ct.population, 
-	COALESCE(vc.total_vaccinations, 0)
-	- LAG(vc.total_vaccinations) 
-		OVER (PARTITION BY ct.location
-		ORDER BY ct.location, vc.date) AS new_vaccinations,
-	vc.total_vaccinations
+  ct.location, vc.date, ct.population, 
+  COALESCE(vc.total_vaccinations, 0)
+  - LAG(vc.total_vaccinations) 
+      OVER (PARTITION BY ct.location
+      ORDER BY ct.location, vc.date) AS new_vaccinations
+  vc.total_vaccinations
 FROM countries ct
 JOIN vaccinations vc ON ct.iso_code = vc.iso_code
 WHERE ct.location = 'Vietnam'
 ORDER BY ct.location, vc.date;
+
+
