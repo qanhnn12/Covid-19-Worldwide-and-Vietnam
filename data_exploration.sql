@@ -122,7 +122,37 @@ ORDER BY death_rate DESC;
 --A. Analysis of Vaccinations by Location--
 ------------------------------------------
 
--- 1. Worldwide - Total Vaccinations Percentage, People Vaccinated Percentage, People Fully Vaccinated Percentage, and Total Boosters Percentage by Country
+-- 1. Worldwide - Total Vaccinations, People Vaccinated, People Fully Vaccinated, and Total Boosters by Country
+
+SELECT 
+  ct.location, ct.population,
+  MAX(vc.total_vaccinations) AS total_vaccination, 
+  MAX(vc.people_vaccinated) AS people_vaccinated, 
+  MAX(vc.people_fully_vaccinated) AS people_fully_vaccinated,
+  MAX(vc.total_boosters) AS total_boosters
+FROM vaccinations vc
+JOIN countries ct ON vc.iso_code = ct.iso_code
+WHERE ct.continent IS NOT NULL
+GROUP BY ct.location, ct.population
+ORDER BY total_vaccination DESC;
+
+
+-- 2. Vietnam - Total Vaccinations, People Vaccinated, People Fully Vaccinated, and Total Boosters
+
+SELECT 
+  ct.location, ct.population,
+  MAX(vc.total_vaccinations) AS total_vaccination, 
+  MAX(vc.people_vaccinated) AS people_vaccinated, 
+  MAX(vc.people_fully_vaccinated) AS people_fully_vaccinated,
+  MAX(vc.total_boosters) AS total_boosters
+FROM vaccinations vc
+JOIN countries ct ON vc.iso_code = ct.iso_code
+WHERE ct.location = 'Vietnam'
+GROUP BY ct.location, ct.population
+ORDER BY total_vaccination DESC;
+
+
+-- 3. Worldwide - Total Vaccinations Percentage, People Vaccinated Percentage, People Fully Vaccinated Percentage, and Total Boosters Percentage by Country
 -- Show the percentage of population vaccinated against Covid
 
 SELECT 
@@ -138,7 +168,7 @@ GROUP BY ct.location, ct.population
 ORDER BY total_vaccination_pct DESC;
 
 
--- 2. Vietnam - Total Vaccinations Percentage, People Vaccinated Percentage, People Fully Vaccinated Percentage, and Total Boosters Percentage
+-- 4. Vietnam - Total Vaccinations Percentage, People Vaccinated Percentage, People Fully Vaccinated Percentage, and Total Boosters Percentage
 -- Show the percentage of Vietnamese population vaccinated against Covid
 
 SELECT 
@@ -152,3 +182,32 @@ JOIN countries ct ON vc.iso_code = ct.iso_code
 WHERE ct.location = 'Vietnam'
 GROUP BY ct.location, ct.population;
 
+
+-- 5. Worldwide - Rolling new vaccinations by Country and Date
+
+SELECT 
+	ct.location, vc.date, ct.population, 
+	COALESCE(vc.total_vaccinations, 0)
+	- LAG(vc.total_vaccinations) 
+		OVER (PARTITION BY ct.location
+		ORDER BY ct.location, vc.date) AS new_vaccinations,
+	vc.total_vaccinations
+FROM countries ct
+JOIN vaccinations vc ON ct.iso_code = vc.iso_code
+WHERE ct.continent IS NOT NULL
+ORDER BY ct.location, vc.date;
+
+
+-- 6. Vietnam - Rolling new vaccinations by Date
+
+SELECT 
+	ct.location, vc.date, ct.population, 
+	COALESCE(vc.total_vaccinations, 0)
+	- LAG(vc.total_vaccinations) 
+		OVER (PARTITION BY ct.location
+		ORDER BY ct.location, vc.date) AS new_vaccinations,
+	vc.total_vaccinations
+FROM countries ct
+JOIN vaccinations vc ON ct.iso_code = vc.iso_code
+WHERE ct.location = 'Vietnam'
+ORDER BY ct.location, vc.date;
