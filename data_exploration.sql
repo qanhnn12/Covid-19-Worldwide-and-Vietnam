@@ -117,6 +117,21 @@ GROUP BY ct.location, ct.population
 ORDER BY death_rate DESC;
 
 
+-- 10. Worldwide - Total Cases, Total Death, Infection Rate, and Death Rate by Income Level
+
+SELECT 
+  ct.location, ct.population,
+  MAX(cs.total_cases) AS total_cases, 
+  MAX(cs.total_deaths) AS total_deaths,
+  MAX(cs.total_cases) / ct.population * 100.0 AS infection_rate,
+  MAX(cs.total_deaths) * 100.0 / MAX(cs.total_cases) AS death_rate
+FROM cases cs
+JOIN countries ct ON cs.iso_code = ct.iso_code
+WHERE ct.location LIKE '%income'
+GROUP BY ct.location, ct.population
+ORDER BY death_rate DESC;
+
+
 
 ------------------------------------------
 --B. Analysis of Vaccinations by Location--
