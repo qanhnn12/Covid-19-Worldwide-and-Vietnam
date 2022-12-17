@@ -206,10 +206,8 @@ GROUP BY ct.location, ct.population;
 
 SELECT 
   ct.location, vc.date, ct.population, 
-  COALESCE(vc.total_vaccinations, 0)
-  - LAG(vc.total_vaccinations) 
-      OVER (PARTITION BY ct.location
-      ORDER BY ct.location, vc.date) AS new_vaccinations,
+  vc.total_vaccinations 
+    - LAG(vc.total_vaccinations) OVER (PARTITION BY ct.location  ORDER BY ct.location, vc.date) AS new_vaccinations,
   vc.total_vaccinations
 FROM countries ct
 JOIN vaccinations vc ON ct.iso_code = vc.iso_code
@@ -221,10 +219,8 @@ ORDER BY ct.location, vc.date;
 
 SELECT 
   ct.location, vc.date, ct.population, 
-  COALESCE(vc.total_vaccinations, 0)
-  - LAG(vc.total_vaccinations) 
-      OVER (PARTITION BY ct.location
-      ORDER BY ct.location, vc.date) AS new_vaccinations
+  vc.total_vaccinations 
+    - LAG(vc.total_vaccinations) OVER (PARTITION BY ct.location  ORDER BY ct.location, vc.date) AS new_vaccinations,
   vc.total_vaccinations
 FROM countries ct
 JOIN vaccinations vc ON ct.iso_code = vc.iso_code
