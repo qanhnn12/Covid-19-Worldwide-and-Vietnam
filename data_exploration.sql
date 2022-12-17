@@ -119,7 +119,7 @@ ORDER BY death_rate DESC;
 
 
 ------------------------------------------
---A. Analysis of Vaccinations by Location--
+--B. Analysis of Vaccinations by Location--
 ------------------------------------------
 
 -- 1. Worldwide - Total Vaccinations, People Vaccinated, People Fully Vaccinated, and Total Boosters by Country
@@ -215,7 +215,7 @@ ORDER BY ct.location, vc.date;
 
 
 ------------------------------------
---A. Analysis of Tests by Location--
+--C. Analysis of Tests by Location--
 ------------------------------------
 
 -- 1. Worldwide - Positive Rate (7-rolling average), Total Tests, and Tests per Confirmed Case (7-rolling average) by Country and Date
