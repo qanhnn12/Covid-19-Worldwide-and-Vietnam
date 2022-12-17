@@ -213,3 +213,51 @@ WHERE ct.location = 'Vietnam'
 ORDER BY ct.location, vc.date;
 
 
+
+------------------------------------
+--A. Analysis of Tests by Location--
+------------------------------------
+
+-- 1. Worldwide - Positive Rate (7-rolling average), Total Tests, and Tests per Confirmed Case (7-rolling average) by Country and Date
+
+SELECT 
+	c.location, c.population, 
+	t.date, t.positive_rate, t.total_tests, t.tests_per_case
+FROM countries c
+JOIN tests t ON c.iso_code = t.iso_code
+WHERE c.continent IS NOT NULL
+ORDER BY c.location, t.date;
+
+
+-- 2. Vietnam - Positive Rate (7-rolling average), Total Tests, and Tests per Confirmed Case (7-rolling average) by Date
+
+SELECT 
+	c.location, c.population, 
+	t.date, t.positive_rate, t.total_tests, t.tests_per_case
+FROM countries c
+JOIN tests t ON c.iso_code = t.iso_code
+WHERE c.location = 'Vietnam'
+ORDER BY t.date;
+
+
+--3. Worldwide - New tests performed each day
+
+SELECT 
+	c.location, c.population, 
+	t.date, t.new_tests
+FROM countries c
+JOIN tests t ON c.iso_code = t.iso_code
+WHERE c.continent IS NOT NULL
+ORDER BY c.location, t.date;
+
+
+-- 4. Vietnam - New tests performed each day
+
+SELECT 
+	c.location, c.population, 
+	t.date, t.new_tests
+FROM countries c
+JOIN tests t ON c.iso_code = t.iso_code
+WHERE c.location = 'Vietnam'
+ORDER BY t.date;
+
