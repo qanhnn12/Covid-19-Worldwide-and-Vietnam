@@ -221,8 +221,8 @@ ORDER BY ct.location, vc.date;
 -- 1. Worldwide - Positive Rate (7-rolling average), Total Tests, and Tests per Confirmed Case (7-rolling average) by Country and Date
 
 SELECT 
-	c.location, c.population, 
-	t.date, t.positive_rate, t.total_tests, t.tests_per_case
+  c.location, c.population, 
+  t.date, t.positive_rate, t.total_tests, t.tests_per_case
 FROM countries c
 JOIN tests t ON c.iso_code = t.iso_code
 WHERE c.continent IS NOT NULL
@@ -232,8 +232,8 @@ ORDER BY c.location, t.date;
 -- 2. Vietnam - Positive Rate (7-rolling average), Total Tests, and Tests per Confirmed Case (7-rolling average) by Date
 
 SELECT 
-	c.location, c.population, 
-	t.date, t.positive_rate, t.total_tests, t.tests_per_case
+  c.location, c.population, 
+  t.date, t.positive_rate, t.total_tests, t.tests_per_case
 FROM countries c
 JOIN tests t ON c.iso_code = t.iso_code
 WHERE c.location = 'Vietnam'
@@ -243,8 +243,8 @@ ORDER BY t.date;
 --3. Worldwide - New tests performed each day
 
 SELECT 
-	c.location, c.population, 
-	t.date, t.new_tests
+  c.location, c.population, 
+  t.date, t.new_tests
 FROM countries c
 JOIN tests t ON c.iso_code = t.iso_code
 WHERE c.continent IS NOT NULL
@@ -254,10 +254,39 @@ ORDER BY c.location, t.date;
 -- 4. Vietnam - New tests performed each day
 
 SELECT 
-	c.location, c.population, 
-	t.date, t.new_tests
+  c.location, c.population, 
+  t.date, t.new_tests
 FROM countries c
 JOIN tests t ON c.iso_code = t.iso_code
 WHERE c.location = 'Vietnam'
 ORDER BY t.date;
+
+
+
+-----------------------------------------------
+--D. Analysis of Hospitalizations by Location--
+-----------------------------------------------
+
+-- 1. Worldwide - Number of patients, Number of ICU patients, Weekly hospital admissions, and Weekly ICU admission due to Covid by Country and Date
+
+SELECT 
+  ct.location, ct.population, 
+  hp.date, hp.hosp_patients, icu_patients,
+  hp.weekly_hosp_admissions, hp.weekly_icu_admissions
+FROM countries ct
+JOIN hospitals hp ON ct.iso_code = hp.iso_code
+WHERE ct.continent IS NOT NULL
+ORDER BY ct.location, hp.date;
+
+
+-- 2. Vietnam- Number of patients, Number of ICU patients, Weekly hospital admissions, and Weekly ICU admission due to Covid by Date
+
+SELECT 
+  ct.location, ct.population, 
+  hp.date, hp.hosp_patients, icu_patients,
+  hp.weekly_hosp_admissions, hp.weekly_icu_admissions
+FROM countries ct
+JOIN hospitals hp ON ct.iso_code = hp.iso_code
+WHERE ct.location = 'Vietnam'
+ORDER BY ct.location, hp.date;
 
