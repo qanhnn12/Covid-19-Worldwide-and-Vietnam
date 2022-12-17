@@ -3,11 +3,11 @@
 -----------------------------------------------
 
 -- 1. Worldwide - Total Cases, Total Deaths and Death Rate by Country and Date
--- Shows the likelihood of dying if you contract Covid in each country
+-- Shows the likelihood of dying if you infect with Covid-19
 
 SELECT 
   ct.location, cs.date, cs.total_cases, cs.total_deaths,
-  100.0 * cs.total_deaths / cs.total_cases AS death_rate
+  100.0 * cs.total_deaths / cs.total_cases AS death_infected_rate
 FROM cases cs
 JOIN countries ct ON cs.iso_code = ct.iso_code
 WHERE ct.continent IS NOT NULL
@@ -15,11 +15,11 @@ ORDER BY ct.location, cs.date;
 
 
 -- 2. Vietnam - Total Cases, Total Deaths and Death Rate by Date
--- Shows the likelihood of dying if you contract Covid in Vietnam
+-- Shows the likelihood of dying if you infect with Covid-19 in Vietnam
 
 SELECT 
   ct.location, cs.date, cs.total_cases, cs.total_deaths,
-  100.0 * cs.total_deaths / cs.total_cases AS death_rate
+  100.0 * cs.total_deaths / cs.total_cases AS death_infected_rate
 FROM cases cs
 JOIN countries ct ON cs.iso_code = ct.iso_code
 WHERE ct.location = 'Vietnam'
@@ -27,7 +27,7 @@ ORDER BY cs.date;
 
 
 -- 3. Worldwide - Infection Rate by Country and Date
--- Shows what percentage of population infected with Covid
+-- Shows what percentage of population infected with Covid-19
 
 SELECT 
   ct.location, cs.date, cs.total_cases, ct.population,
@@ -55,7 +55,7 @@ ORDER BY cs.date;
 SELECT 
   ct.location, ct.population,
   MAX(total_cases) AS total_cases,
-  MAX(100.0 * cs.total_cases / ct.population) AS infection_rate
+  100.0 * MAX( cs.total_cases) / ct.population AS infection_rate
 FROM cases cs
 JOIN countries ct ON cs.iso_code = ct.iso_code
 WHERE ct.continent IS NOT NULL
@@ -68,19 +68,19 @@ ORDER BY infection_rate DESC;
 SELECT 
   ct.location, ct.population,
   MAX(cs.total_cases) AS total_cases,
-  MAX(100.0 * cs.total_cases / ct.population) AS infection_rate
+  100.0 * MAX( cs.total_cases) / ct.population AS infection_rate
 FROM cases cs
 JOIN countries ct ON cs.iso_code = ct.iso_code
 WHERE ct.location = 'Vietnam'
 GROUP BY ct.location, ct.population;
 
 
--- 7. Worldwide - Highest Death Count per Population and Death Rate
+-- 7. Worldwide - Highest Death Count and Death Rate per Population
 
 SELECT 
   ct.location, ct.population,
   MAX(cs.total_deaths) AS total_deaths,
-  MAX(100.0 * cs.total_deaths / ct.population) AS death_rate
+  100.0 * MAX(cs.total_deaths) / ct.population AS death_rate
 FROM cases cs
 JOIN countries ct ON cs.iso_code = ct.iso_code
 WHERE ct.continent IS NOT NULL
@@ -88,26 +88,26 @@ GROUP BY ct.location, ct.population
 ORDER BY death_rate DESC;
 
 
--- 8. Vietnam - Highest Death Count and Death Rate
+-- 8. Vietnam - Highest Death Count and Death Rate per Population
 
 SELECT 
   ct.location, ct.population,
   MAX(cs.total_deaths) AS total_deaths,
-  MAX(100.0 * cs.total_deaths / ct.population) AS death_rate
+  100.0 * MAX(cs.total_deaths) / ct.population AS death_rate
 FROM cases cs
 JOIN countries ct ON cs.iso_code = ct.iso_code
 WHERE ct.location = 'Vietnam'
 GROUP BY ct.location, ct.population;
 
 
--- 9. Worldwide - Total Cases, Total Death, Infection Rate, Death Rate, and Vaccination Rate by Continent
+-- 9. Worldwide - Total Cases, Total Death, Infection Rate, Death Percentage (if infected), and Vaccination Rate by Continent
 
 SELECT 
   ct.location, ct.population,
   MAX(cs.total_cases) AS total_cases, 
   MAX(cs.total_deaths) AS total_deaths,
   MAX(cs.total_cases) / ct.population * 100.0 AS infection_rate,
-  MAX(cs.total_deaths) * 100.0 / MAX(cs.total_cases) AS death_rate,
+  MAX(cs.total_deaths) * 100.0 / MAX(cs.total_cases) AS death_infected_rate,
   MAX(vc.total_vaccinations) * 100.0 / ct.population AS vaccination_rate
 FROM countries ct 
 JOIN cases cs ON cs.iso_code = ct.iso_code
@@ -119,15 +119,15 @@ GROUP BY ct.location, ct.population
 ORDER BY death_rate DESC;
 
 
--- 10. Worldwide - Total Cases, Total Death, Infection Rate, Death Rate, and Vaccination Rate by Income Level
+-- 10. Worldwide - Total Cases, Total Death, Infection Rate, Death Rate (if infected), and Vaccination Rate by Income Level
 
 SELECT 
   ct.location, ct.population,
   MAX(cs.total_cases) AS total_cases, 
   MAX(cs.total_deaths) AS total_deaths,
-  MAX(cs.total_cases) / ct.population * 100.0 AS infection_rate,
-  MAX(cs.total_deaths) * 100.0 / MAX(cs.total_cases) AS death_rate,
-  MAX(vc.total_vaccinations) * 100.0 / ct.population AS vaccination_rate
+  100.0 * MAX(cs.total_cases) / ct.population AS infection_rate,
+  100.0 * MAX(cs.total_deaths) / MAX(cs.total_cases) AS death_infected_rate,
+  100.0 * MAX(vc.total_vaccinations) / ct.population AS vaccination_rate
 FROM countries ct 
 JOIN cases cs ON cs.iso_code = ct.iso_code
 JOIN vaccinations vc ON vc.iso_code = ct.iso_code
@@ -172,11 +172,11 @@ ORDER BY total_vaccination DESC;
 
 
 -- 3. Worldwide - Total Vaccinations Percentage, People Vaccinated Percentage, People Fully Vaccinated Percentage, and Total Boosters Percentage by Country
--- Show the percentage of population vaccinated against Covid
+-- Show the percentage of population vaccinated against Covid-19
 
 SELECT 
   ct.location, ct.population,
-  100.0 * MAX(vc.total_vaccinations) / ct.population AS total_vaccination_pct, 
+  100.0 * MAX(vc.total_vaccinations) / ct.population AS total_vaccination_pct, -- this is vaccination_rate in A9 and A10
   100.0 * MAX(vc.people_vaccinated) / ct.population AS people_vaccinated_pct, 
   100.0 * MAX(vc.people_fully_vaccinated) / ct.population AS people_fully_vaccinated_pct,
   100.0 * MAX(vc.total_boosters) / ct.population AS total_boosters_pct
@@ -188,7 +188,7 @@ ORDER BY total_vaccination_pct DESC;
 
 
 -- 4. Vietnam - Total Vaccinations Percentage, People Vaccinated Percentage, People Fully Vaccinated Percentage, and Total Boosters Percentage
--- Show the percentage of Vietnamese population vaccinated against Covid
+-- Show the percentage of Vietnamese population vaccinated against Covid-19
 
 SELECT 
   ct.location, ct.population,
