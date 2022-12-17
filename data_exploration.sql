@@ -228,6 +228,24 @@ WHERE ct.location = 'Vietnam'
 ORDER BY ct.location, vc.date;
 
 
+--Note: I don't use columns new_cases, new_deaths in table [cases] and new_vaccinations in table [vaccinations] because:
+
+SELECT 
+	ct.location, 
+  MAX(total_cases) - SUM(new_cases) AS diff_cases,
+	MAX(total_deaths) - SUM(new_deaths) AS diff_deaths
+FROM countries ct 
+JOIN cases cs ON cs.iso_code = ct.iso_code
+GROUP BY ct.location;
+
+SELECT 
+	ct.location, 
+	MAX(total_vaccinations) - SUM(new_vaccinations) AS diff_vaccinations
+FROM countries ct 
+JOIN vaccinations vc ON ct.iso_code = vc.iso_code
+GROUP BY ct.location
+
+
 
 ------------------------------------
 --C. Analysis of Tests by Location--
