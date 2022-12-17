@@ -1,6 +1,6 @@
------------------------------------
---A. Cases and Deaths by Location--
------------------------------------
+-----------------------------------------------
+--A. Analysis of Cases and Deaths by Location--
+-----------------------------------------------
 
 -- 1. Worldwide - Total Cases, Total Deaths and Death Rate by Country and Date
 -- Shows the likelihood of dying if you contract Covid in each country
@@ -118,5 +118,36 @@ ORDER BY death_rate DESC;
 
 
 
+------------------------------------------
+--A. Analysis of Vaccination by Location--
+------------------------------------------
 
+-- 1. Worldwide - Total Vaccinations Percentage, People Vaccinated Percentage, People Fully Vaccinated Percentage, and Total Boosters Percentage by Country
+-- Show the percentage of population vaccinated against Covid
+
+SELECT 
+	ct.location, ct.population,
+	100.0*MAX(vc.total_vaccinations)/ct.population AS total_vaccination_pct, 
+	100.0*MAX(vc.people_vaccinated)/ct.population AS people_vaccinated_pct, 
+	100.0*MAX(vc.people_fully_vaccinated)/ct.population AS people_fully_vaccinated_pct,
+	100.0*MAX(vc.total_boosters)/ct.population AS total_boosters_pct
+FROM vaccinations vc
+JOIN countries ct ON vc.iso_code = ct.iso_code
+WHERE ct.continent IS NOT NULL
+GROUP BY ct.location, ct.population
+ORDER BY total_vaccination_pct DESC;
+
+
+-- 2. Vietnam - Total Vaccinations Percentage, People Vaccinated Percentage, People Fully Vaccinated Percentage, and Total Boosters Percentage
+
+SELECT 
+	ct.location, ct.population,
+	100.0*MAX(vc.total_vaccinations)/ct.population AS total_vaccination_pct, 
+	100.0*MAX(vc.people_vaccinated)/ct.population AS people_vaccinated_pct, 
+	100.0*MAX(vc.people_fully_vaccinated)/ct.population AS people_fully_vaccinated_pct,
+	100.0*MAX(vc.total_boosters)/ct.population AS total_boosters_pct
+FROM vaccinations vc
+JOIN countries ct ON vc.iso_code = ct.iso_code
+WHERE ct.location = 'Vietnam'
+GROUP BY ct.location, ct.population;
 
