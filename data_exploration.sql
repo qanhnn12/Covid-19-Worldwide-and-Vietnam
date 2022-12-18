@@ -202,26 +202,34 @@ WHERE ct.location = 'Vietnam'
 GROUP BY ct.location, ct.population;
 
 
--- 5. Worldwide - Rolling new vaccinations by Country and Date
+-- 5. Worldwide - Rolling New Vaccinations, Rolling New cases and Rolling New Deaths by Country and Date
 
 SELECT 
-  ct.location, vc.date, ct.population, vc.new_vaccinations, 
-  SUM(vc.new_vaccinations) OVER (PARTITION BY ct.location ORDER BY ct.location, vc.date) AS rolling_vaccinations
+  ct.location, vc.date, ct.population, 
+  SUM(vc.new_vaccinations) OVER (PARTITION BY ct.location ORDER BY ct.location, vc.date) AS rolling_new_vaccinations,
+  SUM(cs.new_cases) OVER (PARTITION BY ct.location ORDER BY ct.location, cs.date) AS rolling_new_cases,
+  SUM(cs.new_deaths) OVER (PARTITION BY ct.location ORDER BY ct.location, cs.date) AS rolling_new_deaths
 FROM countries ct
 JOIN vaccinations vc ON ct.iso_code = vc.iso_code
+JOIN cases cs ON ct.iso_code = cs.iso_code
+AND vc.date = cs.date
 WHERE ct.continent IS NOT NULL
 ORDER BY ct.location, vc.date;
 
 
--- 6. Vietnam - Rolling new vaccinations by Date
+-- 6. Vietnam - Rolling New Vaccinations, Rolling New cases and Rolling New Deaths by Date
 
 SELECT 
-  ct.location, vc.date, ct.population, vc.new_vaccinations, 
-  SUM(vc.new_vaccinations) OVER (PARTITION BY ct.location ORDER BY ct.location, vc.date) AS rolling_vaccinations
+  ct.location, vc.date, ct.population, 
+  SUM(vc.new_vaccinations) OVER (PARTITION BY ct.location ORDER BY ct.location, vc.date) AS rolling_new_vaccinations,
+  SUM(cs.new_cases) OVER (PARTITION BY ct.location ORDER BY ct.location, cs.date) AS rolling_new_cases,
+  SUM(cs.new_deaths) OVER (PARTITION BY ct.location ORDER BY ct.location, cs.date) AS rolling_new_deaths
 FROM countries ct
 JOIN vaccinations vc ON ct.iso_code = vc.iso_code
+JOIN cases cs ON ct.iso_code = cs.iso_code
+AND vc.date = cs.date
 WHERE ct.location = 'Vietnam'
-ORDER BY ct.location, vc.date;
+ORDER BY vc.date;
 
 
 
