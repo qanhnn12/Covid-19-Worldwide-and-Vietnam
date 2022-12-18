@@ -7,7 +7,7 @@ This repository was inspired by the tutorial of Alex Freberg's [Data Analyst Por
 * [Data Exploratory Analysis](https://github.com/qanhnn12/Covid-19-analysis-Worldwide-and-Vietnam#3-data-exploration-analysis)
 * [Data Visualization](https://github.com/qanhnn12/Covid-19-analysis-Worldwide-and-Vietnam#4-data-visualization)
 
-## 1. Data Preprocessing
+## Data Preprocessing
 The raw Covid-19 dataset from 1 Jan 2020 to 12 Dec 2022 was downloaded from [Our World in Data](https://ourworldindata.org/covid-deaths).
 Detail definition for each column name can be found in this [GitHub](https://github.com/owid/covid-19-data/blob/master/public/data/README.md).
 
@@ -78,7 +78,7 @@ To reduce the size of the dataset, I divided it into 5 tables. Each one was in a
 </p>
 </details>
 
-## 2. Data Importing and Cleaning
+## Data Importing and Cleaning
 Next, I imported 5 tables above to SQL Server. There were some numeric data stored as `nvarchar`, so I converted them to `int`,  `bigint` or `float`.
 View the detail SQL script to convert them [here](https://github.com/qanhnn12/Covid-19-analysis-Worldwide-and-Vietnam/blob/main/data_cleaning.sql).
 
@@ -87,6 +87,39 @@ Well, this is my Entity Relationship Diagram:
 <p align="center">
 <img src="https://user-images.githubusercontent.com/84619797/208293847-6aed2530-473b-435b-b4c8-b52590c812e5.PNG" align="center" width="800" height="420" >
 
-## 3. Data Exploration Analysis
+## Data Exploration Analysis
+### A. Cases and Deaths by Location
+```TSQL
+-- 1. Worldwide - Total Cases, Total Deaths and Death Rate by Country and Date
+-- Shows the likelihood of dying if you infect with Covid-19
+
+SELECT 
+  ct.location, cs.date, cs.total_cases, cs.total_deaths,
+  100.0 * cs.total_deaths / cs.total_cases AS death_infected_rate
+FROM cases cs
+JOIN countries ct ON cs.iso_code = ct.iso_code
+WHERE ct.continent IS NOT NULL
+ORDER BY ct.location, cs.date;
+```
+![image](https://user-images.githubusercontent.com/84619797/208301882-699c9508-884e-4b21-aee8-f1f91aa4a625.png)
+
+Afghanistan had the 1st death on 23 Mar 2020 after 40 cases. The likelihood of dying on that date was 2.5%.
+  
+```TSQL
+-- 2. Vietnam - Total Cases, Total Deaths and Death Rate by Date
+-- Shows the likelihood of dying if you infect with Covid-19 in Vietnam
+
+SELECT 
+  ct.location, cs.date, cs.total_cases, cs.total_deaths,
+  100.0 * cs.total_deaths / cs.total_cases AS death_infected_rate
+FROM cases cs
+JOIN countries ct ON cs.iso_code = ct.iso_code
+WHERE ct.location = 'Vietnam'
+ORDER BY cs.date;
+```
+![image](https://user-images.githubusercontent.com/84619797/208302176-de6c358b-8ad1-4dc4-9b79-5b7df4826ebc.png)
+  
+Vietnam started to have 3 deaths on 31 Jul 2020. The likelihood of dying on that date was 0.5%.
+
 
 ## 4. Data Visualization
