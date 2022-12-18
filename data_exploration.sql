@@ -127,7 +127,7 @@ SELECT
   MAX(cs.total_deaths) AS total_deaths,
   100.0 * MAX(cs.total_cases) / ct.population AS infection_rate,
   100.0 * MAX(cs.total_deaths) / MAX(cs.total_cases) AS death_infected_rate,
-  100.0 * MAX(vc.total_vaccinations) / ct.population AS vaccination_rate
+  100.0 * MAX(vc.total_vaccinations) / ct.population AS total_vaccination_rate
 FROM countries ct 
 JOIN cases cs ON cs.iso_code = ct.iso_code
 JOIN vaccinations vc ON vc.iso_code = ct.iso_code
@@ -171,15 +171,15 @@ GROUP BY ct.location, ct.population
 ORDER BY total_vaccination DESC;
 
 
--- 3. Worldwide - Total Vaccinations Percentage, People Vaccinated Percentage, People Fully Vaccinated Percentage, and Total Boosters Percentage by Country
+-- 3. Worldwide - Total Vaccinations Rate, People Vaccinated Rate, People Fully Vaccinated Rate, and Total Boosters Rate by Country
 -- Show the percentage of population vaccinated against Covid-19
 
 SELECT 
   ct.location, ct.population,
-  100.0 * MAX(vc.total_vaccinations) / ct.population AS total_vaccination_pct, -- this is vaccination_rate in A9 and A10
-  100.0 * MAX(vc.people_vaccinated) / ct.population AS people_vaccinated_pct, 
-  100.0 * MAX(vc.people_fully_vaccinated) / ct.population AS people_fully_vaccinated_pct,
-  100.0 * MAX(vc.total_boosters) / ct.population AS total_boosters_pct
+  100.0 * MAX(vc.total_vaccinations) / ct.population AS total_vaccination_rate,
+  100.0 * MAX(vc.people_vaccinated) / ct.population AS people_vaccinated_rate, 
+  100.0 * MAX(vc.people_fully_vaccinated) / ct.population AS people_fully_vaccinated_rate,
+  100.0 * MAX(vc.total_boosters) / ct.population AS total_boosters_rate
 FROM vaccinations vc
 JOIN countries ct ON vc.iso_code = ct.iso_code
 WHERE ct.continent IS NOT NULL
@@ -187,28 +187,28 @@ GROUP BY ct.location, ct.population
 ORDER BY total_vaccination_pct DESC;
 
 
--- 4. Vietnam - Total Vaccinations Percentage, People Vaccinated Percentage, People Fully Vaccinated Percentage, and Total Boosters Percentage
+-- 4. Vietnam - Total Vaccinations Rate, People Vaccinated Rate, People Fully Vaccinated Rate, and Total Boosters Rate
 -- Show the percentage of Vietnamese population vaccinated against Covid-19
 
 SELECT 
   ct.location, ct.population,
-  100.0 * MAX(vc.total_vaccinations) / ct.population AS total_vaccination_pct, 
-  100.0 * MAX(vc.people_vaccinated) / ct.population AS people_vaccinated_pct, 
-  100.0 * MAX(vc.people_fully_vaccinated) / ct.population AS people_fully_vaccinated_pct,
-  100.0 * MAX(vc.total_boosters) / ct.population AS total_boosters_pct
+  100.0 * MAX(vc.total_vaccinations) / ct.population AS total_vaccination_rate, 
+  100.0 * MAX(vc.people_vaccinated) / ct.population AS people_vaccinated_rate, 
+  100.0 * MAX(vc.people_fully_vaccinated) / ct.population AS people_fully_vaccinated_rate,
+  100.0 * MAX(vc.total_boosters) / ct.population AS total_boosters_rate
 FROM vaccinations vc
 JOIN countries ct ON vc.iso_code = ct.iso_code
 WHERE ct.location = 'Vietnam'
 GROUP BY ct.location, ct.population;
 
 
--- 5. Worldwide - Rolling New Vaccinations, Rolling New Cases, and Rolling New Deaths by Country and Date
+-- 5. Worldwide - Rolling Vaccination Rate, New Cases, and New Deaths by Country and Date
+-- Show the movement of New Cases and New Deaths as the population vaccinated rate increases
 
 SELECT 
   ct.location, vc.date, ct.population, 
-  SUM(vc.new_vaccinations) OVER (PARTITION BY ct.location ORDER BY ct.location, vc.date) AS rolling_new_vaccinations,
-  SUM(cs.new_cases) OVER (PARTITION BY ct.location ORDER BY ct.location, cs.date) AS rolling_new_cases,
-  SUM(cs.new_deaths) OVER (PARTITION BY ct.location ORDER BY ct.location, cs.date) AS rolling_new_deaths
+  SUM(vc.new_vaccinations) OVER (PARTITION BY ct.location ORDER BY ct.location, vc.date) AS rolling_vaccination_rate,
+  cs.new_cases, cs.new_deaths
 FROM countries ct
 JOIN vaccinations vc ON ct.iso_code = vc.iso_code
 JOIN cases cs ON ct.iso_code = cs.iso_code
@@ -217,13 +217,13 @@ WHERE ct.continent IS NOT NULL
 ORDER BY ct.location, vc.date;
 
 
--- 6. Vietnam - Rolling New Vaccinations, Rolling New Cases, and Rolling New Deaths by Date
+-- 6. Vietnam  Rolling Vaccination Rate, New Cases, and New Deaths by Date
+-- Show the movement of New Cases and New Deaths as the population vaccinated rate increases
 
 SELECT 
   ct.location, vc.date, ct.population, 
-  SUM(vc.new_vaccinations) OVER (PARTITION BY ct.location ORDER BY ct.location, vc.date) AS rolling_new_vaccinations,
-  SUM(cs.new_cases) OVER (PARTITION BY ct.location ORDER BY ct.location, cs.date) AS rolling_new_cases,
-  SUM(cs.new_deaths) OVER (PARTITION BY ct.location ORDER BY ct.location, cs.date) AS rolling_new_deaths
+  SUM(vc.new_vaccinations) OVER (PARTITION BY ct.location ORDER BY ct.location, vc.date) AS rolling_vaccination_rate,
+  cs.new_cases, cs.new_deaths
 FROM countries ct
 JOIN vaccinations vc ON ct.iso_code = vc.iso_code
 JOIN cases cs ON ct.iso_code = cs.iso_code
