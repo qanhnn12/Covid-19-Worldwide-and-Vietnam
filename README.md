@@ -2,10 +2,11 @@
 This repository was inspired by the tutorial of Alex Freberg's [Data Analyst Portfolio Projects](https://www.youtube.com/playlist?list=PLUaB-1hjhk8H48Pj32z4GZgGWyylqv85f). Following his instruction, I already performed some EDA and created a Tableau dashboard [here](https://public.tableau.com/views/WorldwideCovid-19Dashboard_16710219069800/Dashboard1?:language=en-US&:display_count=n&:origin=viz_share_link). However, I would like to analyze other aspects of Covid-19 in the global scale and in Vietnam, then visualize them in Power BI since I've just learned it recently.
 
 ## Table of Contents
-1. [Data Preprocessing]
-2. [Data Importing and Cleaning]
+1. [Data Preprocessing](https://github.com/qanhnn12/Covid-19-analysis-Worldwide-and-Vietnam#1-data-preprocessing)
+2. [Data Importing and Cleaning](https://github.com/qanhnn12/Covid-19-analysis-Worldwide-and-Vietnam#2-data-importing-and-cleaning)
 3. [Data Exploratory Analysis]
 4. [Data Visualization]
+5. [Summary and Conclusion]
 
 ## 1. Data Preprocessing
 The raw Covid-19 dataset from 1 Jan 2020 to 12 Dec 2022 was downloaded from [Our World in Data](https://ourworldindata.org/covid-deaths).
@@ -87,6 +88,6 @@ So, this is my Entity Relationship Diagram:
 <p align="center">
 <img src="https://user-images.githubusercontent.com/84619797/208293847-6aed2530-473b-435b-b4c8-b52590c812e5.PNG" align="center" width="800" height="420" >
 
-## 4. Data Exploration Analysis
+## 3. Data Exploration Analysis
 
-## 5. Data Visualization
+## 4. Data Visualization
