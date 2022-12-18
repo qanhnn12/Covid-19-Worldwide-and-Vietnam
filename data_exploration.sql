@@ -100,7 +100,7 @@ WHERE ct.location = 'Vietnam'
 GROUP BY ct.location, ct.population;
 
 
--- 9. Worldwide - Total Cases, Total Death, Infection Rate, Death Percentage (if infected), and Vaccination Rate by Continent
+-- 9. Worldwide - Total Cases, Total Death, Infection Rate, Death Rate (if infected), and Vaccination Rate by Continent
 
 SELECT 
   ct.location, ct.population,
@@ -228,7 +228,9 @@ WHERE ct.location = 'Vietnam'
 ORDER BY ct.location, vc.date;
 
 
---Note: I don't use columns new_cases, new_deaths in table [cases] and new_vaccinations in table [vaccinations] because:
+/* Note: I don't use columns new_cases, new_deaths in table [cases] and new_vaccinations in table [vaccinations] because there is 
+a huge difference between the maximum of total cases/deaths/vaccinations and the sum of new cases/deaths/vaccination, which is weird.
+You can check that using the syntax below:
 
 SELECT 
   ct.location, 
@@ -245,6 +247,7 @@ FROM countries ct
 JOIN vaccinations vc ON ct.iso_code = vc.iso_code
 GROUP BY ct.location;
 
+*/
 
 
 ------------------------------------
