@@ -202,7 +202,7 @@ WHERE ct.location = 'Vietnam'
 GROUP BY ct.location, ct.population;
 
 
--- 5. Worldwide - Rolling New Vaccinations, Rolling New cases and Rolling New Deaths by Country and Date
+-- 5. Worldwide - Rolling New Vaccinations, Rolling New Cases, and Rolling New Deaths by Country and Date
 
 SELECT 
   ct.location, vc.date, ct.population, 
@@ -217,7 +217,7 @@ WHERE ct.continent IS NOT NULL
 ORDER BY ct.location, vc.date;
 
 
--- 6. Vietnam - Rolling New Vaccinations, Rolling New cases and Rolling New Deaths by Date
+-- 6. Vietnam - Rolling New Vaccinations, Rolling New Cases, and Rolling New Deaths by Date
 
 SELECT 
   ct.location, vc.date, ct.population, 
