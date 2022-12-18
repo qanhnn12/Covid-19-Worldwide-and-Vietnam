@@ -136,7 +136,7 @@ ORDER BY ct.location, cs.date;
 ```
   ![image](https://user-images.githubusercontent.com/84619797/208302845-cb8933d7-fefb-402d-aacd-08a43a866f55.png)
 
-The infection Rate of a Country at a given date.
+The infection rate over the population of a country at a given date.
   
 ```TSQL
 -- 4. Vietnam - Infection Rate per Population by Date
@@ -169,5 +169,35 @@ ORDER BY infection_rate DESC;
 ```
 ![image](https://user-images.githubusercontent.com/84619797/208303255-b1bde655-b137-49fc-8b76-50825ac13593.png)
 
+Top 10 countries with highest infection rate.
+  
+```TSQL
+-- 6. Vietnam - Highest Infection Rate
+SELECT 
+  ct.location, ct.population,
+  MAX(cs.total_cases) AS total_cases,
+  100.0 * MAX( cs.total_cases) / ct.population AS infection_rate
+FROM cases cs
+JOIN countries ct ON cs.iso_code = ct.iso_code
+WHERE ct.location = 'Vietnam'
+GROUP BY ct.location, ct.population;
+```
+![image](https://user-images.githubusercontent.com/84619797/208303444-75d63dab-aed6-4868-94e0-56e08aca63ea.png)
+
+With the population of more than 98 million, until 12 Dec 2022, the infection rate is 11.74%. 
+
+```TSQL
+-- 7. Worldwide - Highest Death Count and Death Rate per Population
+
+SELECT 
+  ct.location, ct.population,
+  MAX(cs.total_deaths) AS total_deaths,
+  100.0 * MAX(cs.total_deaths) / ct.population AS death_rate
+FROM cases cs
+JOIN countries ct ON cs.iso_code = ct.iso_code
+WHERE ct.continent IS NOT NULL
+GROUP BY ct.location, ct.population
+ORDER BY death_rate DESC;
+```
 
 ## 📊 Data Visualization
