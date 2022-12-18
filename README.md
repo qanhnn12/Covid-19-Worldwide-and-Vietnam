@@ -1,19 +1,20 @@
-# 📈 Covid-19 analysis: Worldwide and Vietnam
+# :space_invader: Covid-19 analysis: Worldwide and Vietnam
 This repository was inspired by the tutorial of Alex Freberg's [Data Analyst Portfolio Projects](https://www.youtube.com/playlist?list=PLUaB-1hjhk8H48Pj32z4GZgGWyylqv85f). Following his instruction, I already performed some EDA and created a Tableau dashboard [here](https://public.tableau.com/views/WorldwideCovid-19Dashboard_16710219069800/Dashboard1?:language=en-US&:display_count=n&:origin=viz_share_link). However, I would like to analyze other aspects of Covid-19 in the global scale and in Vietnam, then visualize them in Power BI since I've just learned it recently.
 
-## Table of Contents
+## 📓 Table of Contents
 * [Data Preprocessing](https://github.com/qanhnn12/Covid-19-analysis-Worldwide-and-Vietnam#1-data-preprocessing)
 * [Data Importing and Cleaning](https://github.com/qanhnn12/Covid-19-analysis-Worldwide-and-Vietnam#2-data-importing-and-cleaning)
 * [Data Exploratory Analysis](https://github.com/qanhnn12/Covid-19-analysis-Worldwide-and-Vietnam#3-data-exploration-analysis)
 * [Data Visualization](https://github.com/qanhnn12/Covid-19-analysis-Worldwide-and-Vietnam#4-data-visualization)
 
-## Data Preprocessing
+## 🗃️ Data Preprocessing
 The raw Covid-19 dataset from 1 Jan 2020 to 12 Dec 2022 was downloaded from [Our World in Data](https://ourworldindata.org/covid-deaths).
-Detail definition for each column name can be found in this [GitHub](https://github.com/owid/covid-19-data/blob/master/public/data/README.md).
+Detail definition for each column name can be found in this [GitHub doccument](https://github.com/owid/covid-19-data/blob/master/public/data/README.md).
 
-After scrolling the CSV file and GitHub doccument above, I categorized my analysis into 4 main parts: *Cases and Deaths*, *Vaccinations*, *Hospitalizations*, and *Tests*. 
+After scrolling the CSV file and doccument above, I categorized my analysis into 4 main parts: *Cases and Deaths*, *Vaccinations*, *Hospitalizations*, and *Tests*. 
 
-To reduce the size of the dataset, I divided it into 5 tables. Each one was in a corresponding Excel file.
+To reduce the size of the dataset, I divided it into 5 tables. Each one was in a corresponding Excel file. 
+View all files [here](https://github.com/qanhnn12/Covid-19-analysis-Worldwide-and-Vietnam/tree/main/datasets).
 
 
 #### Table `countries`
@@ -78,7 +79,7 @@ To reduce the size of the dataset, I divided it into 5 tables. Each one was in a
 </p>
 </details>
 
-## Data Importing and Cleaning
+## 🧼 Data Importing and Cleaning
 Next, I imported 5 tables above to SQL Server. There were some numeric data stored as `nvarchar`, so I converted them to `int`,  `bigint` or `float`.
 View the detail SQL script to convert them [here](https://github.com/qanhnn12/Covid-19-analysis-Worldwide-and-Vietnam/blob/main/data_cleaning.sql).
 
@@ -87,7 +88,7 @@ Well, this is my Entity Relationship Diagram:
 <p align="center">
 <img src="https://user-images.githubusercontent.com/84619797/208293847-6aed2530-473b-435b-b4c8-b52590c812e5.PNG" align="center" width="800" height="420" >
 
-## Data Exploration Analysis
+## 📂 Data Exploration Analysis
 ### A. Cases and Deaths by Location
 ```TSQL
 -- 1. Worldwide - Total Cases, Total Deaths and Death Rate by Country and Date
@@ -103,7 +104,7 @@ ORDER BY ct.location, cs.date;
 ```
 ![image](https://user-images.githubusercontent.com/84619797/208301882-699c9508-884e-4b21-aee8-f1f91aa4a625.png)
 
-Afghanistan had the 1st death on 23 Mar 2020 after 40 cases. The likelihood of dying on that date was 2.5%.
+Afghanistan has the 1st death on 23 Mar 2020 after 40 cases. The likelihood of dying on that date is 2.5%.
   
 ```TSQL
 -- 2. Vietnam - Total Cases, Total Deaths and Death Rate by Date
@@ -119,7 +120,54 @@ ORDER BY cs.date;
 ```
 ![image](https://user-images.githubusercontent.com/84619797/208302176-de6c358b-8ad1-4dc4-9b79-5b7df4826ebc.png)
   
-Vietnam started to have 3 deaths on 31 Jul 2020. The likelihood of dying on that date was 0.5%.
+Vietnam has 3 first deaths on 31 Jul 2020. The likelihood of dying on that date is 0.5%.
+
+```TSQL
+-- 3. Worldwide - Infection Rate by Country and Date
+-- Shows what percentage of population infected with Covid-19
+
+SELECT 
+  ct.location, cs.date, cs.total_cases, ct.population,
+  100.0 * cs.total_cases / ct.population AS infection_rate
+FROM cases cs
+JOIN countries ct ON cs.iso_code = ct.iso_code
+WHERE ct.continent IS NOT NULL
+ORDER BY ct.location, cs.date;
+```
+  ![image](https://user-images.githubusercontent.com/84619797/208302845-cb8933d7-fefb-402d-aacd-08a43a866f55.png)
+
+The infection Rate of a Country at a given date.
+  
+```TSQL
+-- 4. Vietnam - Infection Rate per Population by Date
+-- Shows what percentage of Vietnamese population infected with Covid-19
+
+SELECT 
+  ct.location, cs.date, cs.total_cases, ct.population,
+  100.0 * cs.total_cases / ct.population AS infection_rate
+FROM cases cs
+JOIN countries ct ON cs.iso_code = ct.iso_code
+WHERE ct.location = 'Vietnam'
+ORDER BY cs.date;
+```
+![image](https://user-images.githubusercontent.com/84619797/208302960-3d17e142-3eed-406b-8ce3-e33dde0ba5b1.png)
+
+The infection rate in Vietnam is 1 out of 100 people on 11 Sep 2021.
+
+```TSQL
+-- 5. Worldwide - Countries with Highest Infection Rate compared to Population
+
+SELECT 
+  ct.location, ct.population,
+  MAX(total_cases) AS total_cases,
+  100.0 * MAX( cs.total_cases) / ct.population AS infection_rate
+FROM cases cs
+JOIN countries ct ON cs.iso_code = ct.iso_code
+WHERE ct.continent IS NOT NULL
+GROUP BY ct.location, ct.population
+ORDER BY infection_rate DESC;
+```
+![image](https://user-images.githubusercontent.com/84619797/208303255-b1bde655-b137-49fc-8b76-50825ac13593.png)
 
 
-## 4. Data Visualization
+## 📊 Data Visualization
