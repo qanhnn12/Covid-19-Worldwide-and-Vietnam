@@ -79,10 +79,10 @@ To reduce the size of the dataset, I divided it into 5 tables. Each one was in a
 </details>
 
 ## 2. Data Importing and Cleaning
-After importing 5 tables above to SQL Server, there are some numeric data stored as `nvarchar`, so I converted them to `int`,  `bigint` or `float`.
+Next, I imported 5 tables above to SQL Server. There were some numeric data stored as `nvarchar`, so I converted them to `int`,  `bigint` or `float`.
 View the detail SQL script to convert them [here](https://github.com/qanhnn12/Covid-19-analysis-Worldwide-and-Vietnam/blob/main/data_cleaning.sql).
 
-So, this is my Entity Relationship Diagram:
+Well, this is my Entity Relationship Diagram:
 
 <p align="center">
 <img src="https://user-images.githubusercontent.com/84619797/208293847-6aed2530-473b-435b-b4c8-b52590c812e5.PNG" align="center" width="800" height="420" >
