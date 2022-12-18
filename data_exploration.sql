@@ -207,7 +207,8 @@ GROUP BY ct.location, ct.population;
 
 SELECT 
   ct.location, vc.date, ct.population, 
-  SUM(vc.new_vaccinations) OVER (PARTITION BY ct.location ORDER BY ct.location, vc.date) AS rolling_vaccination_rate,
+  SUM(vc.new_vaccinations) OVER (PARTITION BY ct.location ORDER BY ct.location, vc.date)
+    / ct.population * 100.0 AS rolling_vaccination_rate,
   cs.new_cases, cs.new_deaths
 FROM countries ct
 JOIN vaccinations vc ON ct.iso_code = vc.iso_code
@@ -222,7 +223,8 @@ ORDER BY ct.location, vc.date;
 
 SELECT 
   ct.location, vc.date, ct.population, 
-  SUM(vc.new_vaccinations) OVER (PARTITION BY ct.location ORDER BY ct.location, vc.date) AS rolling_vaccination_rate,
+  SUM(vc.new_vaccinations) OVER (PARTITION BY ct.location ORDER BY ct.location, vc.date)
+    / ct.population * 100.0 AS rolling_vaccination_rate,
   cs.new_cases, cs.new_deaths
 FROM countries ct
 JOIN vaccinations vc ON ct.iso_code = vc.iso_code
