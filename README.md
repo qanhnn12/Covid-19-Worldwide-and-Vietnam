@@ -11,10 +11,8 @@ This repository was inspired by the tutorial of Alex Freberg's [Data Analyst Por
 The raw Covid-19 dataset from 1 Jan 2020 to 12 Dec 2022 was downloaded from [Our World in Data](https://ourworldindata.org/covid-deaths).
 Detail definition for each column name can be found in this [GitHub doccument](https://github.com/owid/covid-19-data/blob/master/public/data/README.md).
 
-After scrolling the CSV file and doccument above, I categorized my analysis into 4 main parts: *Cases and Deaths*, *Vaccinations*, *Hospitalizations*, and *Tests*. 
-
-To reduce the size of the dataset, I divided it into 5 tables. Each one was in a corresponding Excel file. 
-View all files [here](https://github.com/qanhnn12/Covid-19-analysis-Worldwide-and-Vietnam/tree/main/datasets).
+After scrolling the CSV file for a while, I decided to divide my analysis into 4 parts: *Cases and Deaths*, *Vaccinations*, *Hospitalizations*, and *Tests*. 
+Each one was stored in a corresponding Excel file. View all files [here](https://github.com/qanhnn12/Covid-19-analysis-Worldwide-and-Vietnam/tree/main/datasets).
 
 
 #### Table `countries`
@@ -83,7 +81,7 @@ View all files [here](https://github.com/qanhnn12/Covid-19-analysis-Worldwide-an
 Next, I imported 5 tables above to SQL Server. There were some numeric data stored as `nvarchar`, so I converted them to `int`,  `bigint` or `float`.
 View the detail SQL script to convert them [here](https://github.com/qanhnn12/Covid-19-analysis-Worldwide-and-Vietnam/blob/main/data_cleaning.sql).
 
-Well, this is my Entity Relationship Diagram:
+The Entity Relationship Diagram would look like this:
 
 <p align="center">
 <img src="https://user-images.githubusercontent.com/84619797/208293847-6aed2530-473b-435b-b4c8-b52590c812e5.PNG" align="center" width="800" height="420" >
@@ -184,7 +182,7 @@ GROUP BY ct.location, ct.population;
 ```
 ![image](https://user-images.githubusercontent.com/84619797/208303444-75d63dab-aed6-4868-94e0-56e08aca63ea.png)
 
-With the population of more than 98 million, until 12 Dec 2022, the infection rate is 11.74%. 
+With the population of more than 98 million, until 12 Dec 2022, the infection rate in Vietnam is 11.74%. 
 
 ```TSQL
 -- 7. Worldwide - Highest Death Count and Death Rate per Population
