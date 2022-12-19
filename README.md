@@ -7,8 +7,8 @@ This repository was inspired by the tutorial of Alex Freberg's [Data Analyst Por
 * [Data Exploratory Analysis](https://github.com/qanhnn12/Covid-19-analysis-Worldwide-and-Vietnam#-data-exploration-analysis)
     * [Cases and Deaths by Location](https://github.com/qanhnn12/Covid-19-analysis-Worldwide-and-Vietnam#a-cases-and-deaths-by-location)
     * [Vaccinations by Location](https://github.com/qanhnn12/Covid-19-analysis-Worldwide-and-Vietnam#b-vaccinations-by-location)
-    * Tests by Location
-    * Hospitalizations by Location
+    * [Tests by Location]
+    * [Hospitalizations by Location]
 * [Data Visualization](https://github.com/qanhnn12/Covid-19-analysis-Worldwide-and-Vietnam#-data-visualization)
 
 ## 🗃️ Data Preprocessing
@@ -399,5 +399,94 @@ ORDER BY vc.date;
 
 Vaccinations in Vietnam begins on 08 Mar 2021.
 
+### C. Tests by Location
+```TSQL
+-- 1. Worldwide - Positive Rate (7-rolling average), Total Tests, and Tests per Confirmed Case (7-rolling average) by Country and Date
+
+SELECT 
+  c.location, c.population, 
+  t.date, t.total_tests, t.tests_units, t.positive_rate, t.tests_per_case
+FROM countries c
+JOIN tests t ON c.iso_code = t.iso_code
+WHERE c.continent IS NOT NULL
+ORDER BY c.location, t.date;
+```
+![image](https://user-images.githubusercontent.com/84619797/208343930-d9f3ae54-1ff9-48d0-87f3-d21287c6df42.png)
+
+Japan conducts first tests on 05 Feb 2020.
+
+```TSQL
+-- 2. Vietnam - Positive Rate (7-rolling average), Total Tests, and Tests per Confirmed Case (7-rolling average) by Date
+
+SELECT 
+  c.location, c.population, 
+  t.date, t.total_tests, t.tests_units, t.positive_rate, t.tests_per_case
+FROM countries c
+JOIN tests t ON c.iso_code = t.iso_code
+WHERE c.location = 'Vietnam'
+ORDER BY t.date;
+```
+![image](https://user-images.githubusercontent.com/84619797/208343678-61563936-20cd-40f8-b69d-1587d44b965b.png)
+
+On 14 Sep 2021, there is 45,095,067 people tested.
+
+```TSQL
+SELECT 
+  c.location, c.population, 
+  t.date, t.new_tests, t.tests_units
+FROM countries c
+JOIN tests t ON c.iso_code = t.iso_code
+WHERE c.continent IS NOT NULL
+ORDER BY c.location, t.date;
+```
+![image](https://user-images.githubusercontent.com/84619797/208344284-1af2ba21-d746-4c23-8783-a6bfc0f6b88e.png)
+
+```TSQL
+-- 4. Vietnam - New tests performed each day
+
+SELECT 
+  c.location, c.population, 
+  t.date, t.new_tests, t.tests_units
+FROM countries c
+JOIN tests t ON c.iso_code = t.iso_code
+WHERE c.location = 'Vietnam'
+ORDER BY t.date;
+```
+![image](https://user-images.githubusercontent.com/84619797/208344494-93b484c3-c687-4223-be53-264788a22468.png)
+
+Vietnam has conducted a massive number of tests on a daily basis in Sep 2021. This is actually our 4th wave of the pandemic that has most deaths recorded.
+
+### D. Hospitalization by Location
+```TSQL
+-- 1. Worldwide - Number of patients, Number of ICU patients, Weekly hospital admissions, and Weekly ICU admission due to Covid by Country and Date
+
+SELECT 
+  ct.location, ct.population, 
+  hp.date, hp.hosp_patients, icu_patients,
+  hp.weekly_hosp_admissions, hp.weekly_icu_admissions
+FROM countries ct
+JOIN hospitals hp ON ct.iso_code = hp.iso_code
+WHERE ct.continent IS NOT NULL
+ORDER BY ct.location, hp.date;
+```
+![image](https://user-images.githubusercontent.com/84619797/208345134-0f0dda38-0e51-4840-954a-5ac1226d96b6.png)
+
+In Mar 2022, there is over 10 thousand hospital admissions in Germany on a daily basis. 😲
+
+```TSQL
+-- 2. Vietnam- Number of patients, Number of ICU patients, Weekly hospital admissions, and Weekly ICU admission due to Covid by Date
+
+SELECT 
+  ct.location, ct.population, 
+  hp.date, hp.hosp_patients, icu_patients,
+  hp.weekly_hosp_admissions, hp.weekly_icu_admissions
+FROM countries ct
+JOIN hospitals hp ON ct.iso_code = hp.iso_code
+WHERE ct.location = 'Vietnam'
+ORDER BY ct.location, hp.date;
+```
+![image](https://user-images.githubusercontent.com/84619797/208349043-9a867d51-97bc-49c4-8939-b4cc9e52a468.png)
+
+Unfortunately, there is no information about hospitalizations in Vietnam.
 
 ## 📊 Data Visualization
