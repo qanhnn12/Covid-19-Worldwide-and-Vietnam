@@ -321,7 +321,7 @@ ORDER BY total_vaccination DESC;
 -- Show the percentage of population vaccinated against Covid-19
 
 SELECT 
-  ct.location, ct.population,
+  ct.continent, ct.location, ct.population,
   100.0 * MAX(vc.total_vaccinations) / ct.population AS total_vaccination_rate,
   100.0 * MAX(vc.people_vaccinated) / ct.population AS people_vaccinated_rate, 
   100.0 * MAX(vc.people_fully_vaccinated) / ct.population AS people_fully_vaccinated_rate,
@@ -329,8 +329,75 @@ SELECT
 FROM vaccinations vc
 JOIN countries ct ON vc.iso_code = ct.iso_code
 WHERE ct.continent IS NOT NULL
-GROUP BY ct.location, ct.population
-ORDER BY total_vaccination_pct DESC;
+GROUP BY ct.continent, ct.location, ct.population
+ORDER BY total_vaccination_rate DESC;
+
 ```
+![image](https://user-images.githubusercontent.com/84619797/208339202-f3180dd8-a00c-4823-a768-79d6354bb599.png)
+Cuba has the highest total vaccination rate. Most Asia countries are on top 12.
+
+```TSQL
+-- 4. Vietnam - Total Vaccinations Rate, People Vaccinated Rate, People Fully Vaccinated Rate, and Total Boosters Rate
+-- Show the percentage of Vietnamese population vaccinated against Covid-19
+
+SELECT 
+  ct.location, ct.population,
+  100.0 * MAX(vc.total_vaccinations) / ct.population AS total_vaccination_rate, 
+  100.0 * MAX(vc.people_vaccinated) / ct.population AS people_vaccinated_rate, 
+  100.0 * MAX(vc.people_fully_vaccinated) / ct.population AS people_fully_vaccinated_rate,
+  100.0 * MAX(vc.total_boosters) / ct.population AS total_boosters_rate
+FROM vaccinations vc
+JOIN countries ct ON vc.iso_code = ct.iso_code
+WHERE ct.location = 'Vietnam'
+GROUP BY ct.location, ct.population;
+```
+![image](https://user-images.githubusercontent.com/84619797/208339340-a5759b12-ae52-40be-96ec-7d790a93f52c.png)
+
+* The vaccination rate over the population of Vietnam is about 269%, which is true. Up to now, most Vietnamese have already vaccinated at least twice.
+* Over 92% of Vietnamese population has vaccinated at least 1 dose.
+* Over 86% of Vietnamese population has fully vacciated.
+
+```TSQL
+-- 5. Worldwide - Rolling Vaccination Rate, New Cases, and New Deaths by Country and Date
+-- Show the movement of New Cases and New Deaths as the population vaccinated rate increases
+
+SELECT 
+  ct.continent, ct.location, vc.date, ct.population, 
+  SUM(vc.new_vaccinations) OVER (PARTITION BY ct.location ORDER BY ct.location, vc.date) AS rolling_vaccination,
+  SUM(vc.new_vaccinations) OVER (PARTITION BY ct.location ORDER BY ct.location, vc.date)
+    / ct.population * 100.0 AS vaccination_per_pop,
+  cs.new_cases, cs.new_deaths
+FROM countries ct
+JOIN vaccinations vc ON ct.iso_code = vc.iso_code
+JOIN cases cs ON ct.iso_code = cs.iso_code
+AND vc.date = cs.date
+WHERE ct.continent IS NOT NULL
+ORDER BY ct.location, vc.date;
+```
+![image](https://user-images.githubusercontent.com/84619797/208341640-8a81d1a0-4b22-4920-b851-c68c81e9469a.png)
+
+Vaccinations in Malaysia begins on 25 Feb 2021.
+
+```TSQL
+-- 6. Vietnam  Rolling Vaccination Rate, New Cases, and New Deaths by Date
+-- Show the movement of New Cases and New Deaths as the population vaccinated rate increases
+
+SELECT 
+  ct.continent, ct.location, vc.date, ct.population, 
+  SUM(vc.new_vaccinations) OVER (PARTITION BY ct.location ORDER BY ct.location, vc.date) AS rolling_vaccination,
+  SUM(vc.new_vaccinations) OVER (PARTITION BY ct.location ORDER BY ct.location, vc.date)
+    / ct.population * 100.0 AS vaccination_per_pop,
+  cs.new_cases, cs.new_deaths
+FROM countries ct
+JOIN vaccinations vc ON ct.iso_code = vc.iso_code
+JOIN cases cs ON ct.iso_code = cs.iso_code
+AND vc.date = cs.date
+WHERE ct.location = 'Vietnam'
+ORDER BY vc.date;
+```
+![image](https://user-images.githubusercontent.com/84619797/208341168-fd1ae941-ef12-4557-ad67-aa87fc192625.png)
+
+Vaccinations in Vietnam begins on 08 Mar 2021.
+
 
 ## 📊 Data Visualization
