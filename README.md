@@ -358,7 +358,7 @@ ORDER BY ct.location, vc.date;
 
 * Vaccinations in Malaysia began on 25 Feb 2021.
 
-#### 6. Vietnam  Rolling Vaccination Rate, New Cases, and New Deaths by Date. These metrics show the movement of New Cases and New Deaths as the population vaccinated rate increases
+#### 6. Vietnam - Rolling Vaccination Rate, New Cases, and New Deaths by Date. These metrics show the movement of New Cases and New Deaths as the population vaccinated rate increases
 ```TSQL
 SELECT 
   ct.continent, ct.location, vc.date, ct.population, 
@@ -448,7 +448,7 @@ ORDER BY ct.location, hp.date;
 
 * In Mar 2022, there was over 10 thousand hospital admissions in Germany on a daily basis. 
 
-#### 2. Vietnam- Number of patients, Number of ICU patients, Weekly hospital admissions, and Weekly ICU admission due to Covid by Date
+#### 2. Vietnam - Number of patients, Number of ICU patients, Weekly hospital admissions, and Weekly ICU admission due to Covid by Date
 ```TSQL
 SELECT 
   ct.location, ct.population, 
