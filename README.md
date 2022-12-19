@@ -338,6 +338,7 @@ ORDER BY total_vaccination_rate DESC;
 
 ```
 ![image](https://user-images.githubusercontent.com/84619797/208339202-f3180dd8-a00c-4823-a768-79d6354bb599.png)
+
 Cuba has the highest total vaccination rate. Most Asia countries are on top 12.
 
 ```TSQL
