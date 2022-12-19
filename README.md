@@ -7,8 +7,8 @@ This repository was inspired by the tutorial of Alex Freberg's [Data Analyst Por
 * [Data Exploratory Analysis](https://github.com/qanhnn12/Covid-19-analysis-Worldwide-and-Vietnam#-data-exploration-analysis)
     * [Cases and Deaths by Location](https://github.com/qanhnn12/Covid-19-analysis-Worldwide-and-Vietnam#a-cases-and-deaths-by-location)
     * [Vaccinations by Location](https://github.com/qanhnn12/Covid-19-analysis-Worldwide-and-Vietnam#b-vaccinations-by-location)
-    * [Tests by Location]
-    * [Hospitalizations by Location]
+    * [Tests by Location](https://github.com/qanhnn12/Covid-19-analysis-Worldwide-and-Vietnam#c-tests-by-location)
+    * [Hospitalizations by Location](https://github.com/qanhnn12/Covid-19-analysis-Worldwide-and-Vietnam#d-hospitalization-by-location)
 * [Data Visualization](https://github.com/qanhnn12/Covid-19-analysis-Worldwide-and-Vietnam#-data-visualization)
 
 ## 🗃️ Data Preprocessing
