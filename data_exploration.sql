@@ -39,7 +39,7 @@ ORDER BY ct.location, cs.date;
 
 
 -- 4. Vietnam - Infection Rate per Population by Date
--- Shows what percentage of Vietnamese population infected with Covid
+-- Shows what percentage of Vietnamese population infected with Covid-19
 
 SELECT 
   ct.location, cs.date, cs.total_cases, ct.population,
@@ -116,7 +116,7 @@ WHERE ct.continent IS NULL
   AND ct.location NOT IN ('World', 'International', 'European Union')
   AND ct.location NOT LIKE '%income'
 GROUP BY ct.location, ct.population
-ORDER BY death_rate DESC;
+ORDER BY death_infected_rate DESC;
 
 
 -- 10. Worldwide - Total Cases, Total Death, Infection Rate, Death Rate (if infected), and Vaccination Rate by Income Level
@@ -133,7 +133,7 @@ JOIN cases cs ON cs.iso_code = ct.iso_code
 JOIN vaccinations vc ON vc.iso_code = ct.iso_code
 WHERE ct.location LIKE '%income'
 GROUP BY ct.location, ct.population
-ORDER BY death_rate DESC;
+ORDER BY death_infected_rate DESC;
 
 
 
