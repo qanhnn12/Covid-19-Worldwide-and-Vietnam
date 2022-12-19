@@ -55,7 +55,7 @@ Each one was stored in a corresponding Excel file. View all files [here](https:/
 
 #### Table `hospitals`
 
-| **Column**             | **Description**                                                                                                                      |
+| **Column**             | **Description**                                                                                                                       |
 |------------------------|---------------------------------------------------------------------------------------------------------------------------------------|
 | iso_code               | Country codes. Note that OWID-defined regions contain prefix 'OWID_'.                                                                 |
 | date                   | Date of observation.                                                                                                                  |
@@ -234,7 +234,8 @@ GROUP BY ct.location, ct.population;
 Up to 12 Dec 2022, Vietnam has the average death of 0.04%.
 
 ```TSQL
--- 9. Worldwide - Total Cases, Total Death, Infection Rate, Death Rate (if infected), and Vaccination Rate by Continent
+-- 9. Worldwide - Total Cases, Total Death, Infection Rate, Death Rate (if infected), 
+--and Vaccination Rate by Continent
 
 SELECT 
   ct.location, ct.population,
@@ -258,7 +259,8 @@ ORDER BY death_infected_rate DESC;
 * Americas has highest vaccination rate, followed by Asia.
 
 ```TSQL
--- 10. Worldwide - Total Cases, Total Death, Infection Rate, Death Rate (if infected), and Vaccination Rate by Income Level
+-- 10. Worldwide - Total Cases, Total Death, Infection Rate, Death Rate (if infected), 
+--and Vaccination Rate by Income Level
 
 SELECT 
   ct.location, ct.population,
@@ -281,7 +283,8 @@ ORDER BY death_infected_rate DESC;
 
 ### B. Vaccinations by Location
 ```TSQL
--- 1. Worldwide - Total Vaccinations, People Vaccinated, People Fully Vaccinated, and Total Boosters by Country
+-- 1. Worldwide - Total Vaccinations, People Vaccinated, People Fully Vaccinated, 
+--and Total Boosters by Country
 
 SELECT 
   ct.location, ct.population,
@@ -317,7 +320,8 @@ ORDER BY total_vaccination DESC;
 ![image](https://user-images.githubusercontent.com/84619797/208338004-0bc0f6a9-bd2d-44ea-a773-3d0534e10001.png)
 
 ```TSQL
--- 3. Worldwide - Total Vaccinations Rate, People Vaccinated Rate, People Fully Vaccinated Rate, and Total Boosters Rate by Country
+-- 3. Worldwide - Total Vaccinations Rate, People Vaccinated Rate, People Fully Vaccinated Rate, 
+--and Total Boosters Rate by Country
 -- Show the percentage of population vaccinated against Covid-19
 
 SELECT 
@@ -337,7 +341,8 @@ ORDER BY total_vaccination_rate DESC;
 Cuba has the highest total vaccination rate. Most Asia countries are on top 12.
 
 ```TSQL
--- 4. Vietnam - Total Vaccinations Rate, People Vaccinated Rate, People Fully Vaccinated Rate, and Total Boosters Rate
+-- 4. Vietnam - Total Vaccinations Rate, People Vaccinated Rate, People Fully Vaccinated Rate,
+--and Total Boosters Rate
 -- Show the percentage of Vietnamese population vaccinated against Covid-19
 
 SELECT 
@@ -401,7 +406,8 @@ Vaccinations in Vietnam begins on 08 Mar 2021.
 
 ### C. Tests by Location
 ```TSQL
--- 1. Worldwide - Positive Rate (7-rolling average), Total Tests, and Tests per Confirmed Case (7-rolling average) by Country and Date
+-- 1. Worldwide - Positive Rate (7-rolling average), Total Tests, 
+--and Tests per Confirmed Case (7-rolling average) by Country and Date
 
 SELECT 
   c.location, c.population, 
@@ -458,7 +464,8 @@ Vietnam has conducted a massive number of tests on a daily basis in Sep 2021. Th
 
 ### D. Hospitalization by Location
 ```TSQL
--- 1. Worldwide - Number of patients, Number of ICU patients, Weekly hospital admissions, and Weekly ICU admission due to Covid by Country and Date
+-- 1. Worldwide - Number of patients, Number of ICU patients, Weekly hospital admissions, 
+-- and Weekly ICU admission due to Covid by Country and Date
 
 SELECT 
   ct.location, ct.population, 
@@ -474,7 +481,8 @@ ORDER BY ct.location, hp.date;
 In Mar 2022, there is over 10 thousand hospital admissions in Germany on a daily basis. 😲
 
 ```TSQL
--- 2. Vietnam- Number of patients, Number of ICU patients, Weekly hospital admissions, and Weekly ICU admission due to Covid by Date
+-- 2. Vietnam- Number of patients, Number of ICU patients, Weekly hospital admissions, 
+-- and Weekly ICU admission due to Covid by Date
 
 SELECT 
   ct.location, ct.population, 
