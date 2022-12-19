@@ -12,13 +12,12 @@ This repository was inspired by the tutorial of Alex Freberg's [Data Analyst Por
 * [Data Visualization](https://github.com/qanhnn12/Covid-19-analysis-Worldwide-and-Vietnam#-data-visualization)
 
 ## 🗃️ Data Preprocessing
-The raw Covid-19 dataset from 1 Jan 2020 to 12 Dec 2022 is in [Our World in Data](https://ourworldindata.org/covid-deaths).
+The raw Covid-19 data collected from 1 Jan 2020 to 12 Dec 2022 is available on [Our World in Data](https://ourworldindata.org/covid-deaths). 
 Detail definition for each column name can be found in this [GitHub doccument](https://github.com/owid/covid-19-data/blob/master/public/data/README.md).
 
-After scrolling the CSV file for a while, I decide to divide my analysis into 4 parts: *Cases and Deaths*, *Vaccinations*, *Hospitalizations*, and *Tests*. 
-Each one is stored in a corresponding Excel file. View all files [here](https://github.com/qanhnn12/Covid-19-analysis-Worldwide-and-Vietnam/tree/main/datasets).
+My analysis has 4 parts: *Cases and Deaths*, *Vaccinations*, *Tests*, and *Hospitalizations*, so I split the original dataset into 4 corresponding tables & a `countries` table to perform `JOIN` later. Each one is stored in an Excel file. View all [here](https://github.com/qanhnn12/Covid-19-analysis-Worldwide-and-Vietnam/tree/main/datasets).
 
-#### Table `countries`
+#### > Table `countries`
 
 | Column |    Description                                                                                                                         |
 |------------|-------------------------------------------------------------------------------------------------------------------------------------------|
@@ -28,7 +27,7 @@ Each one is stored in a corresponding Excel file. View all files [here](https://
 | `population` | Population (latest available values).                                                                                                   |
 
 
-#### Table `cases`
+#### > Table `cases`
 
 | Column | Description  |
 |---|---|
@@ -40,7 +39,7 @@ Each one is stored in a corresponding Excel file. View all files [here](https://
 | new_deaths | New deaths attributed to COVID-19. Counts can include probable deaths, where reported.   |
 
 
-#### Table `vaccinations`
+#### > Table `vaccinations`
 
 | **Column** | **Description** |
 |---|---|
@@ -53,7 +52,7 @@ Each one is stored in a corresponding Excel file. View all files [here](https://
 | new_vaccinations | New COVID-19 vaccination doses administered (only calculated for consecutive days).  |
 
 
-#### Table `hospitals`
+#### > Table `hospitals`
 
 | **Column**             | **Description**                                                                                                                       |
 |------------------------|---------------------------------------------------------------------------------------------------------------------------------------|
@@ -65,7 +64,7 @@ Each one is stored in a corresponding Excel file. View all files [here](https://
 | weekly_hosp_admissions | Number of COVID-19 patients newly admitted to hospitals in a given week (reporting date and the preceeding 6 days)                    |
 
 
-#### Table `tests`
+#### > Table `tests`
 
 | **Column**     | **Description**                                                                                                              |
 |----------------|------------------------------------------------------------------------------------------------------------------------------|
@@ -79,25 +78,25 @@ Each one is stored in a corresponding Excel file. View all files [here](https://
   
 
 ## 🧼 Data Importing and Cleaning
-Next, I imported 5 tables above to SQL Server. There were some numeric data stored as `nvarchar`, so I converted them to `int`,  `bigint` or `float`.
-View the detail SQL script to convert them [here](https://github.com/qanhnn12/Covid-19-analysis-Worldwide-and-Vietnam/blob/main/data_cleaning.sql).
+Next, I import 5 tables above to SQL Server. There are some numeric data stored as `nvarchar`, so I convert them to `int`,  `bigint` or `float`.
+View the detail SQL script for that [here](https://github.com/qanhnn12/Covid-19-analysis-Worldwide-and-Vietnam/blob/main/data_cleaning.sql).
   
-#### Table `countries`
+#### > Table `countries`
 ![image](https://user-images.githubusercontent.com/84619797/208334125-06ddad3d-83d2-4d01-b918-bcc4a942cb3c.png)
 
-#### Table `cases`
+#### > Table `cases`
 ![image](https://user-images.githubusercontent.com/84619797/208334294-dc2186a2-90b6-4bef-9fc3-694a7949f2ee.png)
 
-#### Table `vaccinations`
+#### > Table `vaccinations`
 ![image](https://user-images.githubusercontent.com/84619797/208334394-dc6142c7-d44c-4df1-8ca3-8d81f8f1b77b.png)
 
-#### Table `hospitals`
+#### > Table `hospitals`
 ![image](https://user-images.githubusercontent.com/84619797/208334587-63e96dee-3879-4ffb-afe2-066d286694fc.png)
 
-#### Table `tests`
+#### > Table `tests`
 ![image](https://user-images.githubusercontent.com/84619797/208334655-a3fe48bc-c058-4629-9a75-d59075367033.png)
 
-#### The Entity Relationship Diagram
+#### > Entity Relationship Diagram
 <img src="https://user-images.githubusercontent.com/84619797/208293847-6aed2530-473b-435b-b4c8-b52590c812e5.PNG" width="800" height="420" >
 
 ## 📂 Data Exploration Analysis
