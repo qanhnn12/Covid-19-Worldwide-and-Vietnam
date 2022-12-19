@@ -12,18 +12,18 @@ This repository was inspired by the tutorial of Alex Freberg's [Data Analyst Por
 * [Data Visualization](https://github.com/qanhnn12/Covid-19-analysis-Worldwide-and-Vietnam#-data-visualization)
 
 ## 🗃️ Data Preprocessing
-The raw Covid-19 dataset from 1 Jan 2020 to 12 Dec 2022 was downloaded from [Our World in Data](https://ourworldindata.org/covid-deaths).
+The raw Covid-19 dataset from 1 Jan 2020 to 12 Dec 2022 is in [Our World in Data](https://ourworldindata.org/covid-deaths).
 Detail definition for each column name can be found in this [GitHub doccument](https://github.com/owid/covid-19-data/blob/master/public/data/README.md).
 
-After scrolling the CSV file for a while, I decided to divide my analysis into 4 parts: *Cases and Deaths*, *Vaccinations*, *Hospitalizations*, and *Tests*. 
-Each one was stored in a corresponding Excel file. View all files [here](https://github.com/qanhnn12/Covid-19-analysis-Worldwide-and-Vietnam/tree/main/datasets).
+After scrolling the CSV file for a while, I decide to divide my analysis into 4 parts: *Cases and Deaths*, *Vaccinations*, *Hospitalizations*, and *Tests*. 
+Each one is stored in a corresponding Excel file. View all files [here](https://github.com/qanhnn12/Covid-19-analysis-Worldwide-and-Vietnam/tree/main/datasets).
 
 #### Table `countries`
 
 | Column |    Description                                                                                                                         |
 |------------|-------------------------------------------------------------------------------------------------------------------------------------------|
 | `iso_code`| Country codes. Note that OWID-defined regions contain prefix 'OWID_'.                                                                      |
-| `continent`  | Continent of the geographical location. Note that Americas were divided into *North America* and *South America*.                       |
+| `continent`  | Continent of the geographical location. Note that Americas are divided into *North America* and *South America* in the file.            |
 | `location`   | Geographical location (not exactly country name). There are also continents, income classes and other labels. You can check that when filtering *blank* on `continent` column.                                                                                                                           |
 | `population` | Population (latest available values).                                                                                                   |
 
@@ -102,10 +102,8 @@ View the detail SQL script to convert them [here](https://github.com/qanhnn12/Co
 
 ## 📂 Data Exploration Analysis
 ### A. Cases and Deaths by Location
+#### 1. Worldwide - Total Cases, Total Deaths and Death Rate (if infected) by Country and Date. These metrics show the likelihood of dying if you infect with Covid-19
 ```TSQL
--- 1. Worldwide - Total Cases, Total Deaths and Death Rate by Country and Date
--- Shows the likelihood of dying if you infect with Covid-19
-
 SELECT 
   ct.location, cs.date, cs.total_cases, cs.total_deaths,
   100.0 * cs.total_deaths / cs.total_cases AS death_infected_rate
@@ -116,12 +114,10 @@ ORDER BY ct.location, cs.date;
 ```
 ![image](https://user-images.githubusercontent.com/84619797/208301882-699c9508-884e-4b21-aee8-f1f91aa4a625.png)
 
-Afghanistan has the 1st death on 23 Mar 2020 after 40 cases. The likelihood of dying on that date is 2.5%.
-  
-```TSQL
--- 2. Vietnam - Total Cases, Total Deaths and Death Rate by Date
--- Shows the likelihood of dying if you infect with Covid-19 in Vietnam
+* Afghanistan had the 1st death on 23 Mar 2020 after 40 cases. The likelihood of dying on that date was 2.5%.
 
+#### 2. Vietnam - Total Cases, Total Deaths and Death Rate by Date. These metrics show the likelihood of dying if you infect with Covid-19 in Vietnam
+```TSQL
 SELECT 
   ct.location, cs.date, cs.total_cases, cs.total_deaths,
   100.0 * cs.total_deaths / cs.total_cases AS death_infected_rate
@@ -132,12 +128,10 @@ ORDER BY cs.date;
 ```
 ![image](https://user-images.githubusercontent.com/84619797/208302176-de6c358b-8ad1-4dc4-9b79-5b7df4826ebc.png)
   
-Vietnam has 3 first deaths on 31 Jul 2020. The likelihood of dying on that date is 0.54%.
+* Vietnam had 3 first deaths on 31 Jul 2020. The likelihood of dying on that date was 0.54%.
 
+#### 3. Worldwide - Infection Rate by Country and Date. These metrics show what percentage of population infected with Covid-19
 ```TSQL
--- 3. Worldwide - Infection Rate by Country and Date
--- Shows what percentage of population infected with Covid-19
-
 SELECT 
   ct.location, cs.date, cs.total_cases, ct.population,
   100.0 * cs.total_cases / ct.population AS infection_rate
@@ -148,12 +142,10 @@ ORDER BY ct.location, cs.date;
 ```
   ![image](https://user-images.githubusercontent.com/84619797/208302845-cb8933d7-fefb-402d-aacd-08a43a866f55.png)
 
-The infection rate over the population of a country at a given date.
-  
-```TSQL
--- 4. Vietnam - Infection Rate per Population by Date
--- Shows what percentage of Vietnamese population infected with Covid-19
+* This is the infection rate over the population of a country at a given date.
 
+#### 4. Vietnam - Infection Rate per Population by Date. This metric shows what percentage of Vietnamese population infected with Covid-19
+```TSQL
 SELECT 
   ct.location, cs.date, cs.total_cases, ct.population,
   100.0 * cs.total_cases / ct.population AS infection_rate
@@ -164,11 +156,10 @@ ORDER BY cs.date;
 ```
 ![image](https://user-images.githubusercontent.com/84619797/208302960-3d17e142-3eed-406b-8ce3-e33dde0ba5b1.png)
 
-On 11 Sep 2021, the infection rate is 1 out of 100 people in Vietnam.
+* On 11 Sep 2021, the infection rate was 1 out of 100 people in Vietnam.
 
+#### 5. Worldwide - Countries with Highest Infection Rate compared to Population
 ```TSQL
--- 5. Worldwide - Countries with Highest Infection Rate compared to Population
-
 SELECT 
   ct.location, ct.population,
   MAX(total_cases) AS total_cases,
@@ -181,10 +172,10 @@ ORDER BY infection_rate DESC;
 ```
 ![image](https://user-images.githubusercontent.com/84619797/208303255-b1bde655-b137-49fc-8b76-50825ac13593.png)
 
-Top 10 countries with highest infection rate.
-  
+* Above is the top 10 countries with highest infection rate.
+
+#### 6. Vietnam - Highest Infection Rate
 ```TSQL
--- 6. Vietnam - Highest Infection Rate
 SELECT 
   ct.location, ct.population,
   MAX(cs.total_cases) AS total_cases,
@@ -196,11 +187,10 @@ GROUP BY ct.location, ct.population;
 ```
 ![image](https://user-images.githubusercontent.com/84619797/208303444-75d63dab-aed6-4868-94e0-56e08aca63ea.png)
 
-With the population of more than 98 million, until 12 Dec 2022, the infection rate in Vietnam is 11.74%. 
+* With the population of more than 98 million, until 12 Dec 2022, the infection rate in Vietnam is 11.74%. 
 
+#### 7. Worldwide - Highest Death Count and Death Rate per Population
 ```TSQL
--- 7. Worldwide - Highest Death Count and Death Rate per Population
-
 SELECT 
   ct.location, ct.population,
   MAX(cs.total_deaths) AS total_deaths,
@@ -213,13 +203,12 @@ ORDER BY death_rate DESC;
 ```
 ![image](https://user-images.githubusercontent.com/84619797/208333940-e6b7d840-b6b3-44d7-a93c-407a17b03a83.png)
 
-Peru has highest death rate, while US has highest death count.
+* Peru has highest death rate, while US has highest death count.
 
 ![image](https://user-images.githubusercontent.com/84619797/208335694-a1f7a9f0-e0c6-4384-8b26-da0aca30a0d8.png)
 
+#### 8. Vietnam - Highest Death Count and Death Rate per Population
 ```TSQL
--- 8. Vietnam - Highest Death Count and Death Rate per Population
-
 SELECT 
   ct.location, ct.population,
   MAX(cs.total_deaths) AS total_deaths,
@@ -231,12 +220,10 @@ GROUP BY ct.location, ct.population;
 ```
 ![image](https://user-images.githubusercontent.com/84619797/208335823-fdbd537a-be57-496c-8f06-c173912b63e3.png)
 
-Up to 12 Dec 2022, Vietnam has the average death of 0.04%.
+* Up to 12 Dec 2022, Vietnam has the average death of 0.04%.
 
+#### 9. Worldwide - Total Cases, Total Death, Infection Rate, Death Rate (if infected), and Vaccination Rate by Continent
 ```TSQL
--- 9. Worldwide - Total Cases, Total Death, Infection Rate, Death Rate (if infected), 
---and Vaccination Rate by Continent
-
 SELECT 
   ct.location, ct.population,
   MAX(cs.total_cases) AS total_cases, 
@@ -258,10 +245,8 @@ ORDER BY death_infected_rate DESC;
 * Africa has the highest death rate (if infected), followed by Americas.
 * Americas has highest vaccination rate, followed by Asia.
 
+#### 10. Worldwide - Total Cases, Total Death, Infection Rate, Death Rate (if infected), and Vaccination Rate by Income Level
 ```TSQL
--- 10. Worldwide - Total Cases, Total Death, Infection Rate, Death Rate (if infected), 
---and Vaccination Rate by Income Level
-
 SELECT 
   ct.location, ct.population,
   MAX(cs.total_cases) AS total_cases, 
@@ -282,10 +267,8 @@ ORDER BY death_infected_rate DESC;
 * High income countries have the lowest death rate (if infected) and highest vaccination rate.
 
 ### B. Vaccinations by Location
+#### 1. Worldwide - Total Vaccinations, People Vaccinated, People Fully Vaccinated, and Total Boosters by Country
 ```TSQL
--- 1. Worldwide - Total Vaccinations, People Vaccinated, People Fully Vaccinated, 
---and Total Boosters by Country
-
 SELECT 
   ct.location, ct.population,
   MAX(vc.total_vaccinations) AS total_vaccination, 
@@ -300,11 +283,11 @@ ORDER BY total_vaccination DESC;
 ```
 ![image](https://user-images.githubusercontent.com/84619797/208337775-786a772b-f938-4979-ba0e-311df08ad541.png)
 
-10 leading countries in terms of total number of vaccinations. China is on the top, Vietnam is currently at 9th place.
+* Above is the 10 leading countries in terms of total number of vaccinations. 
+* China is currently on top, Vietnam is at 9th place.
 
+#### 2. Vietnam - Total Vaccinations, People Vaccinated, People Fully Vaccinated, and Total Boosters
 ```TSQL
--- 2. Vietnam - Total Vaccinations, People Vaccinated, People Fully Vaccinated, and Total Boosters
-
 SELECT 
   ct.location, ct.population,
   MAX(vc.total_vaccinations) AS total_vaccination, 
@@ -319,11 +302,8 @@ ORDER BY total_vaccination DESC;
 ```
 ![image](https://user-images.githubusercontent.com/84619797/208338004-0bc0f6a9-bd2d-44ea-a773-3d0534e10001.png)
 
+#### 3. Worldwide - Total Vaccinations Rate, People Vaccinated Rate, People Fully Vaccinated Rate, and Total Boosters Rate by Country. These metrics show the overall percentage of population vaccinated against Covid-19
 ```TSQL
--- 3. Worldwide - Total Vaccinations Rate, People Vaccinated Rate, People Fully Vaccinated Rate, 
---and Total Boosters Rate by Country
--- Show the percentage of population vaccinated against Covid-19
-
 SELECT 
   ct.continent, ct.location, ct.population,
   100.0 * MAX(vc.total_vaccinations) / ct.population AS total_vaccination_rate,
@@ -339,13 +319,10 @@ ORDER BY total_vaccination_rate DESC;
 ```
 ![image](https://user-images.githubusercontent.com/84619797/208339202-f3180dd8-a00c-4823-a768-79d6354bb599.png)
 
-Cuba has the highest total vaccination rate. Most Asia countries are on top 12.
+* Cuba has the highest total vaccination rate. Most Asia countries are on top 12.
 
+#### 4. Vietnam - Total Vaccinations Rate, People Vaccinated Rate, People Fully Vaccinated Rate, and Total Boosters Rate. These metrics show the overall percentage of Vietnamese population vaccinated against Covid-19
 ```TSQL
--- 4. Vietnam - Total Vaccinations Rate, People Vaccinated Rate, People Fully Vaccinated Rate,
---and Total Boosters Rate
--- Show the percentage of Vietnamese population vaccinated against Covid-19
-
 SELECT 
   ct.location, ct.population,
   100.0 * MAX(vc.total_vaccinations) / ct.population AS total_vaccination_rate, 
@@ -363,10 +340,8 @@ GROUP BY ct.location, ct.population;
 * Over 92% of Vietnamese population has vaccinated at least 1 dose.
 * Over 86% of Vietnamese population has fully vacciated.
 
+#### 5. Worldwide - Rolling Vaccination Rate, New Cases, and New Deaths by Country and Date. These metrics show the movement of New Cases and New Deaths as the population vaccinated rate increases
 ```TSQL
--- 5. Worldwide - Rolling Vaccination Rate, New Cases, and New Deaths by Country and Date
--- Show the movement of New Cases and New Deaths as the population vaccinated rate increases
-
 SELECT 
   ct.continent, ct.location, vc.date, ct.population, 
   SUM(vc.new_vaccinations) OVER (PARTITION BY ct.location ORDER BY ct.location, vc.date) AS rolling_vaccination,
@@ -382,12 +357,10 @@ ORDER BY ct.location, vc.date;
 ```
 ![image](https://user-images.githubusercontent.com/84619797/208341640-8a81d1a0-4b22-4920-b851-c68c81e9469a.png)
 
-Vaccinations in Malaysia begins on 25 Feb 2021.
+* Vaccinations in Malaysia began on 25 Feb 2021.
 
+#### 6. Vietnam  Rolling Vaccination Rate, New Cases, and New Deaths by Date. These metrics show the movement of New Cases and New Deaths as the population vaccinated rate increases
 ```TSQL
--- 6. Vietnam  Rolling Vaccination Rate, New Cases, and New Deaths by Date
--- Show the movement of New Cases and New Deaths as the population vaccinated rate increases
-
 SELECT 
   ct.continent, ct.location, vc.date, ct.population, 
   SUM(vc.new_vaccinations) OVER (PARTITION BY ct.location ORDER BY ct.location, vc.date) AS rolling_vaccination,
@@ -403,13 +376,11 @@ ORDER BY vc.date;
 ```
 ![image](https://user-images.githubusercontent.com/84619797/208341168-fd1ae941-ef12-4557-ad67-aa87fc192625.png)
 
-Vaccinations in Vietnam begins on 08 Mar 2021.
+* Vaccinations in Vietnam began on 08 Mar 2021.
 
 ### C. Tests by Location
+#### 1. Worldwide - Positive Rate (7-rolling average), Total Tests, and Tests per Confirmed Case (7-rolling average) by Country and Date
 ```TSQL
--- 1. Worldwide - Positive Rate (7-rolling average), Total Tests, 
---and Tests per Confirmed Case (7-rolling average) by Country and Date
-
 SELECT 
   c.location, c.population, 
   t.date, t.total_tests, t.tests_units, t.positive_rate, t.tests_per_case
@@ -420,11 +391,10 @@ ORDER BY c.location, t.date;
 ```
 ![image](https://user-images.githubusercontent.com/84619797/208343930-d9f3ae54-1ff9-48d0-87f3-d21287c6df42.png)
 
-Japan conducts first tests on 05 Feb 2020.
+* Japan conducted first tests on 05 Feb 2020.
 
+#### 2. Vietnam - Positive Rate (7-rolling average), Total Tests, and Tests per Confirmed Case (7-rolling average) by Date
 ```TSQL
--- 2. Vietnam - Positive Rate (7-rolling average), Total Tests, and Tests per Confirmed Case (7-rolling average) by Date
-
 SELECT 
   c.location, c.population, 
   t.date, t.total_tests, t.tests_units, t.positive_rate, t.tests_per_case
@@ -435,8 +405,9 @@ ORDER BY t.date;
 ```
 ![image](https://user-images.githubusercontent.com/84619797/208343678-61563936-20cd-40f8-b69d-1587d44b965b.png)
 
-On 14 Sep 2021, there is 45,095,067 people tested.
+* On 14 Sep 2021, there was 45,095,067 people tested.
 
+#### 3. Worldwide - New tests performed each day
 ```TSQL
 SELECT 
   c.location, c.population, 
@@ -448,9 +419,8 @@ ORDER BY c.location, t.date;
 ```
 ![image](https://user-images.githubusercontent.com/84619797/208344284-1af2ba21-d746-4c23-8783-a6bfc0f6b88e.png)
 
+#### 4. Vietnam - New tests performed each day
 ```TSQL
--- 4. Vietnam - New tests performed each day
-
 SELECT 
   c.location, c.population, 
   t.date, t.new_tests, t.tests_units
@@ -461,13 +431,11 @@ ORDER BY t.date;
 ```
 ![image](https://user-images.githubusercontent.com/84619797/208344494-93b484c3-c687-4223-be53-264788a22468.png)
 
-Vietnam has conducted a massive number of tests on a daily basis in Sep 2021. This is actually our 4th wave of the pandemic that has most deaths recorded.
+* Vietnam conducted a massive number of tests on a daily basis in Sep 2021. This was actually our 4th wave of the pandemic that had most deaths recorded [Link](https://www.frontiersin.org/articles/10.3389/fpubh.2021.709067/full).
 
 ### D. Hospitalization by Location
+#### 1. Worldwide - Number of patients, Number of ICU patients, Weekly hospital admissions, and Weekly ICU admission due to Covid by Country and Date
 ```TSQL
--- 1. Worldwide - Number of patients, Number of ICU patients, Weekly hospital admissions, 
--- and Weekly ICU admission due to Covid by Country and Date
-
 SELECT 
   ct.location, ct.population, 
   hp.date, hp.hosp_patients, icu_patients,
@@ -479,12 +447,10 @@ ORDER BY ct.location, hp.date;
 ```
 ![image](https://user-images.githubusercontent.com/84619797/208345134-0f0dda38-0e51-4840-954a-5ac1226d96b6.png)
 
-In Mar 2022, there is over 10 thousand hospital admissions in Germany on a daily basis. 😲
+* In Mar 2022, there was over 10 thousand hospital admissions in Germany on a daily basis. 
 
+#### 2. Vietnam- Number of patients, Number of ICU patients, Weekly hospital admissions, and Weekly ICU admission due to Covid by Date
 ```TSQL
--- 2. Vietnam- Number of patients, Number of ICU patients, Weekly hospital admissions, 
--- and Weekly ICU admission due to Covid by Date
-
 SELECT 
   ct.location, ct.population, 
   hp.date, hp.hosp_patients, icu_patients,
@@ -496,6 +462,6 @@ ORDER BY ct.location, hp.date;
 ```
 ![image](https://user-images.githubusercontent.com/84619797/208349043-9a867d51-97bc-49c4-8939-b4cc9e52a468.png)
 
-Unfortunately, there is no information about hospitalizations in Vietnam.
+* Unfortunately, there is no information about hospitalizations in Vietnam.
 
 ## 📊 Data Visualization
