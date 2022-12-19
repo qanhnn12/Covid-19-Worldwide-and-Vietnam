@@ -175,7 +175,7 @@ ORDER BY total_vaccination DESC;
 -- Show the percentage of population vaccinated against Covid-19
 
 SELECT 
-  ct.location, ct.population,
+  ct.continent, ct.location, ct.population,
   100.0 * MAX(vc.total_vaccinations) / ct.population AS total_vaccination_rate,
   100.0 * MAX(vc.people_vaccinated) / ct.population AS people_vaccinated_rate, 
   100.0 * MAX(vc.people_fully_vaccinated) / ct.population AS people_fully_vaccinated_rate,
@@ -183,8 +183,8 @@ SELECT
 FROM vaccinations vc
 JOIN countries ct ON vc.iso_code = ct.iso_code
 WHERE ct.continent IS NOT NULL
-GROUP BY ct.location, ct.population
-ORDER BY total_vaccination_pct DESC;
+GROUP BY ct.continent, ct.location, ct.population
+ORDER BY total_vaccination_rate DESC;
 
 
 -- 4. Vietnam - Total Vaccinations Rate, People Vaccinated Rate, People Fully Vaccinated Rate, and Total Boosters Rate
