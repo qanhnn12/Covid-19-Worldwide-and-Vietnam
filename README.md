@@ -2,10 +2,14 @@
 This repository was inspired by the tutorial of Alex Freberg's [Data Analyst Portfolio Projects](https://www.youtube.com/playlist?list=PLUaB-1hjhk8H48Pj32z4GZgGWyylqv85f). Following his instruction, I already performed some EDA and created a Tableau dashboard [here](https://public.tableau.com/views/WorldwideCovid-19Dashboard_16710219069800/Dashboard1?:language=en-US&:display_count=n&:origin=viz_share_link). However, I would like to analyze other aspects of Covid-19 in the global scale and in Vietnam, then visualize them in Power BI since I've just learned it recently.
 
 ## 📓 Table of Contents
-* [Data Preprocessing](https://github.com/qanhnn12/Covid-19-analysis-Worldwide-and-Vietnam-data-preprocessing)
-* [Data Importing and Cleaning](https://github.com/qanhnn12/Covid-19-analysis-Worldwide-and-Vietnam-data-importing-and-cleaning)
-* [Data Exploratory Analysis](https://github.com/qanhnn12/Covid-19-analysis-Worldwide-and-Vietnam-data-exploration-analysis)
-* [Data Visualization](https://github.com/qanhnn12/Covid-19-analysis-Worldwide-and-Vietnam-data-visualization)
+* [Data Preprocessing](https://github.com/qanhnn12/Covid-19-analysis-Worldwide-and-Vietnam#%EF%B8%8F-data-preprocessing)
+* [Data Importing and Cleaning](https://github.com/qanhnn12/Covid-19-analysis-Worldwide-and-Vietnam#-data-importing-and-cleaning)
+* [Data Exploratory Analysis](https://github.com/qanhnn12/Covid-19-analysis-Worldwide-and-Vietnam#-data-exploration-analysis)
+    * [Cases and Deaths by Location](https://github.com/qanhnn12/Covid-19-analysis-Worldwide-and-Vietnam#a-cases-and-deaths-by-location)
+    * [Vaccinations by Location](https://github.com/qanhnn12/Covid-19-analysis-Worldwide-and-Vietnam#b-vaccinations-by-location)
+    * Tests by Location
+    * Hospitalizations by Location
+* [Data Visualization](https://github.com/qanhnn12/Covid-19-analysis-Worldwide-and-Vietnam#-data-visualization)
 
 ## 🗃️ Data Preprocessing
 The raw Covid-19 dataset from 1 Jan 2020 to 12 Dec 2022 was downloaded from [Our World in Data](https://ourworldindata.org/covid-deaths).
