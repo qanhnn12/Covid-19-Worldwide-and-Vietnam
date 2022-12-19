@@ -245,7 +245,7 @@ ORDER BY vc.date;
 
 SELECT 
   c.location, c.population, 
-  t.date, t.positive_rate, t.total_tests, t.tests_per_case
+  t.date, t.total_tests, t.tests_units, t.positive_rate, t.tests_per_case
 FROM countries c
 JOIN tests t ON c.iso_code = t.iso_code
 WHERE c.continent IS NOT NULL
@@ -256,7 +256,7 @@ ORDER BY c.location, t.date;
 
 SELECT 
   c.location, c.population, 
-  t.date, t.positive_rate, t.total_tests, t.tests_per_case
+  t.date, t.total_tests, t.tests_units, t.positive_rate, t.tests_per_case
 FROM countries c
 JOIN tests t ON c.iso_code = t.iso_code
 WHERE c.location = 'Vietnam'
@@ -267,7 +267,7 @@ ORDER BY t.date;
 
 SELECT 
   c.location, c.population, 
-  t.date, t.new_tests
+  t.date, t.new_tests, t.tests_units
 FROM countries c
 JOIN tests t ON c.iso_code = t.iso_code
 WHERE c.continent IS NOT NULL
@@ -278,7 +278,7 @@ ORDER BY c.location, t.date;
 
 SELECT 
   c.location, c.population, 
-  t.date, t.new_tests
+  t.date, t.new_tests, t.tests_units
 FROM countries c
 JOIN tests t ON c.iso_code = t.iso_code
 WHERE c.location = 'Vietnam'
