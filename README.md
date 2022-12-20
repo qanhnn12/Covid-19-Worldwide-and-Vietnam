@@ -11,6 +11,7 @@ This repository was inspired by the tutorial of Alex Freberg's [Data Analyst Por
     * [D. Hospitalizations by Location](https://github.com/qanhnn12/Covid-19-analysis-Worldwide-and-Vietnam#d-hospitalization-by-location)
 * [Data Visualization](https://github.com/qanhnn12/Covid-19-analysis-Worldwide-and-Vietnam#-data-visualization)
 
+---
 ## 🗃️ Data Preprocessing
 The raw Covid-19 data collected from 1 Jan 2020 to 12 Dec 2022 is available on [Our World in Data](https://ourworldindata.org/covid-deaths). 
 Detail definition for each column name can be found in this [GitHub doccument](https://github.com/owid/covid-19-data/blob/master/public/data/README.md).
@@ -76,7 +77,7 @@ My analysis has 4 parts: *Cases and Deaths*, *Vaccinations*, *Tests*, and *Hospi
 | tests_per_case | Tests conducted per new confirmed case of COVID-19, given as a rolling 7-day average (this is the inverse of positive_rate)  |
 | tests_units    | Units used by the location to report its testing data.                                                                       |
   
-
+---
 ## 🧼 Data Importing and Cleaning
 Next, I import 5 tables above to SQL Server. There are some numeric data stored as `nvarchar`, so I convert them to `int`,  `bigint` or `float`.
 View the detail SQL script for that [here](https://github.com/qanhnn12/Covid-19-analysis-Worldwide-and-Vietnam/blob/main/data_cleaning.sql).
@@ -99,6 +100,7 @@ View the detail SQL script for that [here](https://github.com/qanhnn12/Covid-19-
 #### > Entity Relationship Diagram
 <img src="https://user-images.githubusercontent.com/84619797/208293847-6aed2530-473b-435b-b4c8-b52590c812e5.PNG" width="800" height="420" >
 
+---
 ## 📂 Data Exploration Analysis
 ### A. Cases and Deaths by Location
 #### 1. Worldwide - Total Cases, Total Deaths and Death Rate (if infected) by Country and Date. Death Rate (if infected) shows the likelihood of dying if you infect with Covid-19
@@ -465,4 +467,15 @@ ORDER BY ct.location, hp.date;
 
 * Unfortunately, there is no information about hospitalizations in Vietnam.
 
+---
 ## 📊 Data Visualization
+View the Power BI file [here](https://github.com/qanhnn12/Covid-19-analysis-Worldwide-and-Vietnam/blob/main/covid19_visualization.pbix).
+
+![covid19_visualization-1](https://user-images.githubusercontent.com/84619797/208621080-4d618e04-c9d8-4be0-b570-b3a8a1967e53.png)
+
+---
+## 👏 Support
+Please give me a ⭐️ if you like this project!
+
+---
+© 2022 Anh Nguyen
