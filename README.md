@@ -101,7 +101,7 @@ View the detail SQL script for that [here](https://github.com/qanhnn12/Covid-19-
 
 ## 📂 Data Exploration Analysis
 ### A. Cases and Deaths by Location
-#### 1. Worldwide - Total Cases, Total Deaths and Death Rate (if infected) by Country and Date. These metrics show the likelihood of dying if you infect with Covid-19
+#### 1. Worldwide - Total Cases, Total Deaths and Death Rate (if infected) by Country and Date. Death Rate (if infected) shows the likelihood of dying if you infect with Covid-19
 ```TSQL
 SELECT 
   ct.location, cs.date, cs.total_cases, cs.total_deaths,
@@ -115,7 +115,7 @@ ORDER BY ct.location, cs.date;
 
 * Afghanistan had the 1st death on 23 Mar 2020 after 40 cases. The likelihood of dying on that date was 2.5%.
 
-#### 2. Vietnam - Total Cases, Total Deaths and Death Rate by Date. These metrics show the likelihood of dying if you infect with Covid-19 in Vietnam
+#### 2. Vietnam - Total Cases, Total Deaths and Death Rate (if infected) by Date. Death Rate (if infected) shows the likelihood of dying if you infect with Covid-19
 ```TSQL
 SELECT 
   ct.location, cs.date, cs.total_cases, cs.total_deaths,
@@ -129,7 +129,7 @@ ORDER BY cs.date;
   
 * Vietnam had 3 first deaths on 31 Jul 2020. The likelihood of dying on that date was 0.54%.
 
-#### 3. Worldwide - Infection Rate by Country and Date. These metrics show what percentage of population infected with Covid-19
+#### 3. Worldwide - Infection Rate by Country and Date. This shows what percentage of population infected with Covid-19
 ```TSQL
 SELECT 
   ct.location, cs.date, cs.total_cases, ct.population,
@@ -233,6 +233,7 @@ SELECT
 FROM countries ct 
 JOIN cases cs ON cs.iso_code = ct.iso_code
 JOIN vaccinations vc ON vc.iso_code = ct.iso_code
+  AND cs.date = vc.date
 WHERE ct.continent IS NULL
   AND ct.location NOT IN ('World', 'International', 'European Union')
   AND ct.location NOT LIKE '%income'
@@ -256,6 +257,7 @@ SELECT
 FROM countries ct 
 JOIN cases cs ON cs.iso_code = ct.iso_code
 JOIN vaccinations vc ON vc.iso_code = ct.iso_code
+  AND cs.date = vc.date
 WHERE ct.location LIKE '%income'
 GROUP BY ct.location, ct.population
 ORDER BY death_infected_rate DESC;
