@@ -469,9 +469,10 @@ ORDER BY ct.location, hp.date;
 
 ---
 ## 📊 Data Visualization
+
 View the Power BI file [here](https://github.com/qanhnn12/Covid-19-analysis-Worldwide-and-Vietnam/blob/main/covid19_visualization.pbix).
 
-![covid19_visualization-1](https://user-images.githubusercontent.com/84619797/208621080-4d618e04-c9d8-4be0-b570-b3a8a1967e53.png)
+![covid19_visualization-1](https://user-images.githubusercontent.com/84619797/208947350-2276b349-61b6-441a-9660-9b744ea232f4.png)
 
 ---
 ## 👏 Support
